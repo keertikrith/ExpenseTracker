@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { getFinancialNews } from '@/app/actions/getFinancialNews';
 
 interface NewsArticle {
@@ -17,13 +18,16 @@ const FinancialNews = () => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('general');
+  const t = useTranslations('news');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
 
   const categories = [
-    { id: 'general', name: 'General', icon: '📰' },
-    { id: 'stocks', name: 'Stocks', icon: '📈' },
-    { id: 'crypto', name: 'Crypto', icon: '₿' },
-    { id: 'economy', name: 'Economy', icon: '🏛️' },
-    { id: 'technology', name: 'Tech', icon: '💻' }
+    { id: 'general', name: t('general'), icon: '📰' },
+    { id: 'stocks', name: t('stocks'), icon: '📈' },
+    { id: 'crypto', name: t('crypto'), icon: '₿' },
+    { id: 'economy', name: t('economy'), icon: '🏛️' },
+    { id: 'technology', name: t('tech'), icon: '💻' }
   ];
 
   useEffect(() => {
@@ -97,10 +101,10 @@ const FinancialNews = () => {
             </div>
             <div>
               <h3 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100'>
-                Financial News
+                {t('title')}
               </h3>
               <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
-                Latest market updates
+                {t('latestUpdates')}
               </p>
             </div>
           </div>
@@ -109,7 +113,7 @@ const FinancialNews = () => {
             disabled={isLoading}
             className='px-3 py-1.5 bg-gradient-to-r from-orange-600 via-red-500 to-pink-500 hover:from-orange-700 hover:via-red-600 hover:to-pink-600 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-lg text-xs font-medium transition-all duration-200 disabled:cursor-not-allowed'
           >
-            {isLoading ? 'Loading...' : 'Refresh'}
+            {isLoading ? tCommon('loading') : tCommon('refresh')}
           </button>
         </div>
 
@@ -193,7 +197,7 @@ const FinancialNews = () => {
                           rel='noopener noreferrer'
                           className='text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium'
                         >
-                          Read More →
+                          {t('readMore')}
                         </a>
                       </div>
                     </div>
@@ -209,4 +213,5 @@ const FinancialNews = () => {
 };
 
 export default FinancialNews;
+
 

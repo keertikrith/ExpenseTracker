@@ -6,7 +6,8 @@ import { UserProfile } from '@/lib/userProfile';
 export async function generateStockAnalysis(
   symbol: string,
   stockData: any,
-  userProfile?: UserProfile | null
+  userProfile?: UserProfile | null,
+  locale: string = 'en'
 ): Promise<{
   analysis: string;
   recommendation: 'BUY' | 'SELL' | 'HOLD';
@@ -14,7 +15,7 @@ export async function generateStockAnalysis(
   reasoning: string[];
 }> {
   try {
-    const analysis = await generateStockAnalysisLib(symbol, stockData, userProfile || undefined);
+    const analysis = await generateStockAnalysisLib(symbol, stockData, userProfile || undefined, locale);
     return analysis;
   } catch (error) {
     console.error('❌ Error in generateStockAnalysis action:', error);

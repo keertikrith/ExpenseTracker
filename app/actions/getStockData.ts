@@ -130,3 +130,4 @@ function getCryptoName(symbol: string): string {
   return cryptoNames[symbol] || symbol;
 }
 
+

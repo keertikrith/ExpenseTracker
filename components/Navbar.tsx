@@ -3,10 +3,14 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import ThemeToggle from '@/components/ThemeToggle';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const t = useTranslations('common');
+  const tNavbar = useTranslations('navbar');
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -33,8 +37,8 @@ export default function Navbar() {
                 </span>
               </div>
               <span className='text-sm sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent'>
-                <span className='hidden sm:inline'>ExpenseTracker AI</span>
-                <span className='sm:hidden'>ExpenseTracker</span>
+                <span className='hidden sm:inline'>{tNavbar('title')}</span>
+                <span className='sm:hidden'>{tNavbar('titleShort')}</span>
               </span>
             </Link>
           </div>
@@ -45,7 +49,7 @@ export default function Navbar() {
               href='/'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>Home</span>
+              <span className='relative z-10'>{t('home')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -53,7 +57,7 @@ export default function Navbar() {
               href='/ai-chat'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>AI Chat</span>
+              <span className='relative z-10'>{t('aiChat')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -61,7 +65,7 @@ export default function Navbar() {
               href='/markets'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>Markets</span>
+              <span className='relative z-10'>{t('markets')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -69,7 +73,7 @@ export default function Navbar() {
               href='/crypto'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>Crypto</span>
+              <span className='relative z-10'>{t('crypto')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -77,7 +81,7 @@ export default function Navbar() {
               href='/news'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>News</span>
+              <span className='relative z-10'>{t('news')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -85,7 +89,7 @@ export default function Navbar() {
               href='/about'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>About</span>
+              <span className='relative z-10'>{t('about')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
 
@@ -93,13 +97,16 @@ export default function Navbar() {
               href='/contact'
               className='relative text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 group'
             >
-              <span className='relative z-10'>Contact</span>
+              <span className='relative z-10'>{t('contact')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-green-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
           </div>
 
           {/* Right Section */}
           <div className='flex items-center space-x-1 sm:space-x-2'>
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+            
             {/* Theme Toggle */}
             <div className='p-0.5 sm:p-1'>
               <ThemeToggle />
@@ -111,7 +118,7 @@ export default function Navbar() {
                 <SignInButton>
                   <button className='relative overflow-hidden bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95'>
                     <div className='relative z-10 flex items-center gap-1 sm:gap-2'>
-                      <span>Sign In</span>
+                      <span>{t('signIn')}</span>
                       <svg
                         className='w-3 h-3 sm:w-4 sm:h-4'
                         fill='none'
@@ -196,7 +203,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>🏠</span>
-              <span>Home</span>
+              <span>{t('home')}</span>
             </Link>
             <Link
               href='/ai-chat'
@@ -204,7 +211,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>🤖</span>
-              <span>AI Chat</span>
+              <span>{t('aiChat')}</span>
             </Link>
             <Link
               href='/markets'
@@ -212,7 +219,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>📈</span>
-              <span>Markets</span>
+              <span>{t('markets')}</span>
             </Link>
             <Link
               href='/crypto'
@@ -220,7 +227,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>₿</span>
-              <span>Crypto</span>
+              <span>{t('crypto')}</span>
             </Link>
             <Link
               href='/news'
@@ -228,7 +235,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>📰</span>
-              <span>News</span>
+              <span>{t('news')}</span>
             </Link>
             <Link
               href='/about'
@@ -236,7 +243,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>ℹ️</span>
-              <span>About</span>
+              <span>{t('about')}</span>
             </Link>
             <Link
               href='/contact'
@@ -244,7 +251,7 @@ export default function Navbar() {
               onClick={closeMobileMenu}
             >
               <span className='text-base'>📞</span>
-              <span>Contact</span>
+              <span>{t('contact')}</span>
             </Link>
 
             {/* Mobile Authentication */}
@@ -255,7 +262,7 @@ export default function Navbar() {
                     className='w-full bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white px-4 py-3 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 active:scale-95'
                     onClick={closeMobileMenu}
                   >
-                    <span>Sign In</span>
+                    <span>{t('signIn')}</span>
                     <svg
                       className='w-4 h-4'
                       fill='none'

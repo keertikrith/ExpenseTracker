@@ -1,0 +1,111 @@
+{
+  "common": {
+    "home": "Home",
+    "aiChat": "AI Chat",
+    "markets": "Markets",
+    "crypto": "Crypto",
+    "news": "News",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign In",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "close": "Close",
+    "search": "Search",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "navbar": {
+    "title": "ExpenseTracker AI",
+    "titleShort": "ExpenseTracker"
+  },
+  "markets": {
+    "title": "Stock Market",
+    "subtitle": "Track real-time prices of Indian stocks. For crypto and news, visit the dedicated pages below.",
+    "cryptoLink": "View Cryptocurrency Markets",
+    "newsLink": "Read Financial News",
+    "stockMarketCrypto": "Stock Market & Crypto",
+    "realTimeData": "Real-time market data with AI analysis",
+    "indianStocks": "Indian Stocks",
+    "cryptocurrency": "Cryptocurrency",
+    "searchPlaceholder": "Search Indian stocks (e.g., RELIANCE.BSE)",
+    "cryptoSearchPlaceholder": "Search Crypto (e.g., BTC/USD)",
+    "currentPrice": "Current Price",
+    "change": "Change",
+    "volume": "Volume",
+    "marketCap": "Market Cap",
+    "high": "High",
+    "low": "Low",
+    "open": "Open",
+    "previousClose": "Previous Close",
+    "analysis": "Analysis",
+    "recommendation": "AI Recommendation",
+    "confidence": "Confidence",
+    "keyPoints": "Key Points",
+    "buyOnGroww": "🟢 Buy on Groww",
+    "sellOnGroww": "🔴 Sell on Groww",
+    "viewOnGroww": "📊 View on Groww",
+    "analyzingStock": "Analyzing stock...",
+    "unableToGenerate": "Unable to generate analysis at this time.",
+    "analysisUnavailable": "Analysis temporarily unavailable"
+  },
+  "crypto": {
+    "title": "Cryptocurrency Markets",
+    "subtitle": "Track real-time prices of popular cryptocurrencies in USD."
+  },
+  "news": {
+    "title": "Financial News",
+    "subtitle": "Latest market updates across stocks, crypto, economy and tech.",
+    "latestUpdates": "Latest market updates",
+    "general": "General",
+    "stocks": "Stocks",
+    "crypto": "Crypto",
+    "economy": "Economy",
+    "tech": "Tech",
+    "readMore": "Read More →",
+    "newsUnavailable": "News temporarily unavailable",
+    "placeholderDescription": "We could not load live news at the moment. Showing placeholder content."
+  },
+  "ai": {
+    "chatTitle": "AI Financial Assistant",
+    "chatSubtitle": "Ask me anything about your finances, investments, or market trends",
+    "sendMessage": "Send Message",
+    "typeMessage": "Type your message here...",
+    "thinking": "Thinking...",
+    "unableToRespond": "I'm unable to provide a response at the moment. Please try again.",
+    "welcomeMessage": "Hello! I'm your AI financial assistant. How can I help you today?"
+  },
+  "insights": {
+    "title": "AI Insights",
+    "subtitle": "Personalized financial insights based on your spending patterns",
+    "welcomeTitle": "Welcome to ExpenseTracker AI!",
+    "welcomeMessage": "Start adding your expenses to get personalized AI insights about your spending patterns.",
+    "addFirstExpense": "Add your first expense",
+    "trackRegularly": "Track Regularly",
+    "trackMessage": "For best results, try to log expenses daily. This helps our AI provide more accurate insights.",
+    "setReminders": "Set daily reminders",
+    "insightsUnavailable": "Insights Temporarily Unavailable",
+    "insightsMessage": "We're having trouble analyzing your expenses right now. Please try again in a few minutes.",
+    "retryAnalysis": "Retry analysis"
+  },
+  "home": {
+    "welcomeBack": "Welcome Back, {name}!",
+    "description": "Here's a quick overview of your recent expense activity. Track your spending, analyze patterns, and manage your budget efficiently!",
+    "joined": "Joined",
+    "lastActive": "Last Active",
+    "today": "Today"
+  },
+  "footer": {
+    "brand": "ExpenseTracker AI",
+    "tagline": "Intelligent financial management powered by AI. Track your expenses, manage your budget, and gain insights into your spending patterns.",
+    "quickLinks": "Quick Links",
+    "features": "Features",
+    "aiInsights": "AI-Powered Insights",
+    "smartCategorization": "Smart Categorization",
+    "analyticsDashboard": "Analytics Dashboard",
+    "allRightsReserved": "All rights reserved.",
+    "madeBy": "Made by Sahand"
+  }
+}

@@ -226,7 +226,8 @@ export async function generateAIAnswer(
 export async function generateAIChatResponse(
   message: string,
   userProfile?: UserProfile,
-  conversationHistory?: Array<{role: string, content: string}>
+  conversationHistory?: Array<{role: string, content: string}>,
+  locale: string = 'en'
 ): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
@@ -247,7 +248,7 @@ export async function generateAIChatResponse(
     ${conversationHistory.slice(-6).map(msg => `${msg.role}: ${msg.content}`).join('\n')}
     ` : '';
 
-    const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. 
+    const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. ${locale === 'hi' ? 'Respond in Hindi (हिन्दी). Use Devanagari script.' : locale === 'kn' ? 'Respond in Kannada (ಕನ್ನಡ). Use Kannada script.' : 'Respond in English.'}
 
     ${userContext}
     ${conversationContext}
@@ -290,7 +291,8 @@ export async function generateAIChatResponse(
 export async function generateStockAnalysis(
   symbol: string,
   stockData: any,
-  userProfile?: UserProfile
+  userProfile?: UserProfile,
+  locale: string = 'en'
 ): Promise<{
   analysis: string;
   recommendation: 'BUY' | 'SELL' | 'HOLD';
@@ -308,7 +310,14 @@ export async function generateStockAnalysis(
     - Monthly Income: ${userProfile.monthlyIncome || 'Not specified'}
     ` : '';
 
-    const prompt = `Analyze this Indian stock and provide investment advice. Use the provided stock symbol exactly in your analysis and compute a numeric rating from 0 to 100 (where 0 is very bearish and 100 is very bullish). Do not default to 50. Return JSON only.
+    // Language instruction based on locale
+    const languageInstruction = locale === 'hi' 
+      ? 'Respond in Hindi (हिन्दी). Use Devanagari script.' 
+      : locale === 'kn' 
+      ? 'Respond in Kannada (ಕನ್ನಡ). Use Kannada script.'
+      : 'Respond in English.';
+
+    const prompt = `Analyze this Indian stock and provide investment advice. ${languageInstruction} Use the provided stock symbol exactly in your analysis and compute a numeric rating from 0 to 100 (where 0 is very bearish and 100 is very bullish). Do not default to 50. Return JSON only.
 
     ${userContext}
     
@@ -377,5 +386,19 @@ export async function generateStockAnalysis(
       confidence: 0.5,
       reasoning: ['Analysis temporarily unavailable']
     };
+  }
+}
+
+export async function translateText(text: string, targetLocale: string): Promise<string> {
+  try {
+    if (!text) return text;
+    if (!targetLocale || targetLocale === 'en') return text;
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const prompt = `Translate the following text to ${targetLocale}. Return ONLY the translated text without quotes or extra commentary.\n\nText: ${text}`;
+    const res = await model.generateContent(prompt);
+    const out = await res.response.text();
+    return (out || text).trim();
+  } catch {
+    return text;
   }
 }

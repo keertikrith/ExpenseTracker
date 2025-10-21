@@ -5,6 +5,7 @@ import { getStockData } from '@/app/actions/getStockData';
 import { generateStockAnalysis } from '@/app/actions/generateStockAnalysis';
 import { getUserProfile } from '@/lib/userProfile';
 import { getStockSeries } from '@/app/actions/getStockSeries';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface StockData {
   symbol: string;
@@ -50,6 +51,10 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [series, setSeries] = useState<Array<{ time: string; price: number }>>([]);
+  
+  const t = useTranslations('markets');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
 
   // Popular Indian stocks
   const popularStocks = [
@@ -156,7 +161,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
       // Load series in parallel with analysis
       const [seriesData, analysis] = await Promise.all([
         getStockSeries(stock.symbol),
-        generateStockAnalysis(stock.symbol, stock, userProfile),
+        generateStockAnalysis(stock.symbol, stock, userProfile, locale),
       ]);
       setSeries(seriesData);
       setStockAnalysis(analysis);
@@ -231,12 +236,12 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
               <span className='text-white text-sm sm:text-lg'>📈</span>
             </div>
             <div>
-              <h3 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100'>
-                Stock Market & Crypto
-              </h3>
-              <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
-                Real-time market data with AI analysis
-              </p>
+            <h3 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100'>
+              {mode === 'crypto' ? t('cryptocurrency') : mode === 'stocks' ? t('indianStocks') : t('stockMarketCrypto')}
+            </h3>
+            <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
+              {t('realTimeData')}
+            </p>
             </div>
           </div>
           <button
@@ -244,7 +249,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
             disabled={isLoading}
             className='px-3 py-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500 hover:from-blue-700 hover:via-indigo-600 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-lg text-xs font-medium transition-all duration-200 disabled:cursor-not-allowed'
           >
-            {isLoading ? 'Loading...' : 'Refresh'}
+            {isLoading ? tCommon('loading') : tCommon('refresh')}
           </button>
         </div>
 
@@ -254,7 +259,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
             type='text'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={`Search ${activeTab === 'stocks' ? 'Indian stocks (e.g., RELIANCE.BSE)' : 'Crypto (e.g., BTC/USD)'}`}
+            placeholder={activeTab === 'stocks' ? t('searchPlaceholder') : t('cryptoSearchPlaceholder')}
             className='flex-1 p-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
@@ -263,7 +268,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
             disabled={isLoading || !searchQuery.trim()}
             className='px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-xl font-medium transition-all duration-200 disabled:cursor-not-allowed'
           >
-            Search
+            {tCommon('search')}
           </button>
         </div>
       </div>
@@ -278,7 +283,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
-          Indian Stocks
+          {t('indianStocks')}
         </button>
         <button
           onClick={() => setActiveTab('crypto')}
@@ -288,7 +293,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
-          Cryptocurrency
+          {t('cryptocurrency')}
         </button>
       </div>
 
@@ -331,9 +336,9 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                         </span>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400'>
-                        <span>Vol: {formatVolume(stock.volume)}</span>
-                        <span>High: {formatPrice(stock.high)}</span>
-                        <span>Low: {formatPrice(stock.low)}</span>
+                        <span>{t('volume')}: {formatVolume(stock.volume)}</span>
+                        <span>{t('high')}: {formatPrice(stock.high)}</span>
+                        <span>{t('low')}: {formatPrice(stock.low)}</span>
                       </div>
                     </div>
                     <div className='text-right'>
@@ -365,9 +370,9 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                         </span>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400'>
-                        <span>Vol: {formatVolume(stock.volume)}</span>
-                        <span>High: {formatPrice(stock.high)}</span>
-                        <span>Low: {formatPrice(stock.low)}</span>
+                        <span>{t('volume')}: {formatVolume(stock.volume)}</span>
+                        <span>{t('high')}: {formatPrice(stock.high)}</span>
+                        <span>{t('low')}: {formatPrice(stock.low)}</span>
                       </div>
                     </div>
                     <div className='text-right'>
@@ -399,8 +404,8 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                         </span>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400'>
-                        <span>Vol: {formatVolume(crypto.volume24h)}</span>
-                        <span>MCap: ${formatVolume(crypto.marketCap)}</span>
+                        <span>{t('volume')}: {formatVolume(crypto.volume24h)}</span>
+                        <span>{t('marketCap')}: ${formatVolume(crypto.marketCap)}</span>
                       </div>
                     </div>
                     <div className='text-right'>
@@ -431,8 +436,8 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                         </span>
                       </div>
                       <div className='flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400'>
-                        <span>Vol: {formatVolume(crypto.volume24h)}</span>
-                        <span>MCap: ${formatVolume(crypto.marketCap)}</span>
+                        <span>{t('volume')}: {formatVolume(crypto.volume24h)}</span>
+                        <span>{t('marketCap')}: ${formatVolume(crypto.marketCap)}</span>
                       </div>
                     </div>
                     <div className='text-right'>
@@ -457,7 +462,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
           <div className='bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto'>
             <div className='flex items-center justify-between mb-4'>
               <h3 className='text-xl font-bold text-gray-900 dark:text-gray-100'>
-                {selectedStock.symbol.replace('.BSE', '')} Analysis
+                {selectedStock.symbol.replace('.BSE', '')} {t('analysis')}
               </h3>
               <button
                 onClick={() => {
@@ -507,25 +512,25 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
             {/* Stock Info */}
             <div className='grid grid-cols-2 md:grid-cols-4 gap-4 mb-6'>
               <div className='bg-gray-50 dark:bg-gray-700 p-3 rounded-lg'>
-                <div className='text-xs text-gray-500 dark:text-gray-400'>Current Price</div>
+                <div className='text-xs text-gray-500 dark:text-gray-400'>{t('currentPrice')}</div>
                 <div className='text-lg font-bold text-gray-900 dark:text-gray-100'>
                   {formatPrice(selectedStock.price)}
                 </div>
               </div>
               <div className='bg-gray-50 dark:bg-gray-700 p-3 rounded-lg'>
-                <div className='text-xs text-gray-500 dark:text-gray-400'>Change</div>
+                <div className='text-xs text-gray-500 dark:text-gray-400'>{t('change')}</div>
                 <div className={`text-lg font-bold ${getChangeColor(selectedStock.change)}`}>
                   {selectedStock.change >= 0 ? '+' : ''}{formatPrice(selectedStock.change)}
                 </div>
               </div>
               <div className='bg-gray-50 dark:bg-gray-700 p-3 rounded-lg'>
-                <div className='text-xs text-gray-500 dark:text-gray-400'>Volume</div>
+                <div className='text-xs text-gray-500 dark:text-gray-400'>{t('volume')}</div>
                 <div className='text-lg font-bold text-gray-900 dark:text-gray-100'>
                   {formatVolume(selectedStock.volume)}
                 </div>
               </div>
               <div className='bg-gray-50 dark:bg-gray-700 p-3 rounded-lg'>
-                <div className='text-xs text-gray-500 dark:text-gray-400'>Market Cap</div>
+                <div className='text-xs text-gray-500 dark:text-gray-400'>{t('marketCap')}</div>
                 <div className='text-lg font-bold text-gray-900 dark:text-gray-100'>
                   {formatVolume(selectedStock.marketCap)}
                 </div>
@@ -544,7 +549,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                     <div className='w-2 h-2 bg-gray-400 rounded-full animate-bounce' style={{ animationDelay: '0.1s' }}></div>
                     <div className='w-2 h-2 bg-gray-400 rounded-full animate-bounce' style={{ animationDelay: '0.2s' }}></div>
                   </div>
-                  <span className='text-gray-600 dark:text-gray-400'>Analyzing stock...</span>
+                  <span className='text-gray-600 dark:text-gray-400'>{t('analyzingStock')}</span>
                 </div>
               </div>
             ) : stockAnalysis ? (
@@ -553,11 +558,11 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                 <div className={`p-4 rounded-lg border ${getRecommendationColor(stockAnalysis.recommendation)}`}>
                   <div className='flex items-center justify-between'>
                     <div>
-                      <div className='text-sm font-medium'>AI Recommendation</div>
+                      <div className='text-sm font-medium'>{t('recommendation')}</div>
                       <div className='text-2xl font-bold'>{stockAnalysis.recommendation}</div>
                     </div>
                     <div className='text-right'>
-                      <div className='text-sm font-medium'>Confidence</div>
+                      <div className='text-sm font-medium'>{t('confidence')}</div>
                       <div className='text-lg font-bold'>{(stockAnalysis.confidence * 100).toFixed(0)}%</div>
                     </div>
                   </div>
@@ -565,7 +570,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
 
                 {/* Analysis */}
                 <div className='bg-gray-50 dark:bg-gray-700 p-4 rounded-lg'>
-                  <h4 className='font-semibold text-gray-900 dark:text-gray-100 mb-2'>Analysis</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-gray-100 mb-2'>{t('analysis')}</h4>
                   <p className='text-gray-700 dark:text-gray-300 text-sm leading-relaxed'>
                     {stockAnalysis.analysis}
                   </p>
@@ -573,7 +578,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
 
                 {/* Reasoning */}
                 <div className='bg-gray-50 dark:bg-gray-700 p-4 rounded-lg'>
-                  <h4 className='font-semibold text-gray-900 dark:text-gray-100 mb-2'>Key Points</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-gray-100 mb-2'>{t('keyPoints')}</h4>
                   <ul className='space-y-1'>
                     {stockAnalysis.reasoning.map((reason, index) => (
                       <li key={index} className='text-gray-700 dark:text-gray-300 text-sm flex items-start gap-2'>
@@ -598,9 +603,9 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                         : 'bg-blue-500 hover:bg-blue-600 text-white'
                     }`}
                   >
-                    {stockAnalysis.recommendation === 'BUY' ? '🟢 Buy on Groww' : 
-                     stockAnalysis.recommendation === 'SELL' ? '🔴 Sell on Groww' : 
-                     '📊 View on Groww'}
+                    {stockAnalysis.recommendation === 'BUY' ? t('buyOnGroww') : 
+                     stockAnalysis.recommendation === 'SELL' ? t('sellOnGroww') : 
+                     t('viewOnGroww')}
                   </a>
                   <button
                     onClick={() => {
@@ -609,7 +614,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
                     }}
                     className='px-4 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors duration-200'
                   >
-                    Close
+                    {tCommon('close')}
                   </button>
                 </div>
               </div>
