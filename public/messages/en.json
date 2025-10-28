@@ -24,8 +24,9 @@
   "markets": {
     "title": "Stock Market",
     "subtitle": "Track real-time prices of Indian stocks. For crypto and news, visit the dedicated pages below.",
-    "cryptoLink": "View Cryptocurrency Markets",
-    "newsLink": "Read Financial News",
+    "description": "Track real-time prices of Indian stocks. For crypto and news, visit the dedicated pages below.",
+    "viewCrypto": "View Cryptocurrency Markets",
+    "readNews": "Read Financial News",
     "stockMarketCrypto": "Stock Market & Crypto",
     "realTimeData": "Real-time market data with AI analysis",
     "indianStocks": "Indian Stocks",
@@ -66,7 +67,16 @@
     "tech": "Tech",
     "readMore": "Read More →",
     "newsUnavailable": "News temporarily unavailable",
-    "placeholderDescription": "We could not load live news at the moment. Showing placeholder content."
+    "placeholderDescription": "We could not load live news at the moment. Showing placeholder content.",
+    "placeholderTitle1": "Indian Stock Market Shows Strong Performance",
+    "placeholderDesc1": "The Indian stock market continues to show resilience with major indices reaching new highs amid global economic uncertainties.",
+    "placeholderSource1": "Financial Times",
+    "placeholderTitle2": "Cryptocurrency Market Analysis",
+    "placeholderDesc2": "Bitcoin and other major cryptocurrencies show mixed signals as investors navigate through market volatility.",
+    "placeholderSource2": "Crypto News",
+    "placeholderTitle3": "Economic Growth Forecast",
+    "placeholderDesc3": "Experts predict continued economic growth for India with focus on digital transformation and infrastructure development.",
+    "placeholderSource3": "Economic Times"
   },
   "ai": {
     "chatTitle": "AI Financial Assistant",
@@ -75,7 +85,8 @@
     "typeMessage": "Type your message here...",
     "thinking": "Thinking...",
     "unableToRespond": "I'm unable to provide a response at the moment. Please try again.",
-    "welcomeMessage": "Hello! I'm your AI financial assistant. How can I help you today?"
+    "welcomeMessage": "Hello! I'm your AI financial assistant. How can I help you today?",
+    "goalInputPlaceholder": "Enter a financial goal"
   },
   "insights": {
     "title": "AI Insights",
@@ -88,14 +99,113 @@
     "setReminders": "Set daily reminders",
     "insightsUnavailable": "Insights Temporarily Unavailable",
     "insightsMessage": "We're having trouble analyzing your expenses right now. Please try again in a few minutes.",
-    "retryAnalysis": "Retry analysis"
+    "retryAnalysis": "Retry analysis",
+    "analyzing": "Analyzing...",
+    "aiAnalyzing": "AI is analyzing your financial patterns..."
   },
   "home": {
     "welcomeBack": "Welcome Back, {name}!",
     "description": "Here's a quick overview of your recent expense activity. Track your spending, analyze patterns, and manage your budget efficiently!",
     "joined": "Joined",
     "lastActive": "Last Active",
-    "today": "Today"
+    "today": "Today",
+    "expenseHistoryTitle": "Expense History",
+    "expenseHistorySubtitle": "Your spending timeline",
+    "noRecordsFoundTitle": "No Expense Records Found",
+    "noRecordsFoundMessage": "Start tracking your expenses to see your spending history and patterns here."
+  },
+
+  "guest": {
+    "hero": {
+      "kicker": "AI-Powered Financial Management",
+      "title": "ExpenseTracker AI",
+      "subtitle": "Track your expenses, manage your budget, and get AI-powered insights to take control of your finances.",
+      "ctaGetStarted": "Get Started Free",
+      "ctaLearnMore": "Learn More"
+    },
+    "features": {
+      "aiInsights": "AI Insights",
+      "autoCategories": "Auto Categories",
+      "smartDashboard": "Smart Dashboard",
+      "aiInsightsDesc": "Smart analysis of your spending patterns",
+      "autoCategoriesDesc": "Intelligent expense categorization",
+      "smartDashboardDesc": "Beautiful, intuitive financial overview"
+    },
+    "faq": {
+      "kicker": "FAQ",
+      "titlePrefix": "Frequently Asked",
+      "titleHighlight": "Questions",
+      "description": "Everything you need to know about ExpenseTracker AI and how it can transform your financial management.",
+      "q": {
+        "whatIs": "What is ExpenseTracker AI?",
+        "howAI": "How does the AI work?",
+        "isFree": "Is ExpenseTracker AI free?"
+      },
+      "a": {
+        "whatIs": "ExpenseTracker AI is an intelligent financial management tool that uses artificial intelligence to help you monitor your spending patterns, get smart category suggestions, and receive personalized insights to improve your financial health.",
+        "howAI": "Our AI analyzes your spending data to automatically categorize expenses, detect patterns, and provide personalized recommendations. You can also ask the AI questions about your spending habits and get instant, intelligent responses.",
+        "isFree": "Yes, ExpenseTracker AI offers a free plan with basic AI features including smart categorization and insights. Premium plans are available for advanced AI analytics and unlimited AI interactions."
+      }
+    },
+    "testimonials": {
+      "kicker": "Testimonials",
+      "titlePrefix": "What Our Users",
+      "titleHighlight": "Say",
+      "description": "Join thousands of satisfied users who have transformed their financial habits with ExpenseTracker AI.",
+      "card1": {
+        "name": "Sarah L.",
+        "role": "Verified User",
+        "quote": "ExpenseTracker AI has completely transformed my budgeting. The AI insights are incredibly helpful and I now have full control over my finances!"
+      },
+      "card2": {
+        "name": "John D.",
+        "role": "Verified User",
+        "quote": "The AI-powered insights from ExpenseTracker have helped me identify and reduce unnecessary spending. The smart categorization is amazing!"
+      },
+      "card3": {
+        "name": "Emily R.",
+        "role": "Verified User",
+        "quote": "ExpenseTracker AI is so intelligent and easy to use. The AI recommendations are spot-on and have genuinely improved my financial habits!"
+      }
+    }
+  },
+
+  "expenseStats": {
+    "title": "Expense Statistics",
+    "subtitle": "Your spending insights and ranges",
+    "averageDaily": "Average Daily Spending",
+    "basedOnDays": "Based on {days} days with expenses",
+    "highest": "Highest",
+    "lowest": "Lowest"
+  },
+  "recordChart": {
+    "title": "Expense Chart",
+    "subtitle": "Visual representation of your spending",
+    "errorTitle": "Error loading chart data",
+    "noDataTitle": "No Data to Display",
+    "noDataMessage": "Start tracking your expenses to see your spending patterns visualized in this chart."
+  },
+  "recordItem": {
+    "deleteRecord": "Delete",
+    "deleteTitle": "Delete expense record",
+    "category": {
+      "Food": "Food",
+      "Transportation": "Transportation",
+      "Shopping": "Shopping",
+      "Entertainment": "Entertainment",
+      "Bills": "Bills",
+      "Healthcare": "Healthcare",
+      "Other": "Other"
+    }
+  },
+  "addNewRecord": {
+    "processing": "Processing...",
+    "addExpense": "Add Expense",
+    "descriptionPlaceholder": "Coffee, groceries, gas...",
+    "amountPlaceholder": "0.00",
+    "subtitle": "Track your spending with AI assistance",
+    "aiSuggestionTitle": "AI Category Suggestion",
+    "analyzingDescription": "AI is analyzing your description..."
   },
   "footer": {
     "brand": "ExpenseTracker AI",

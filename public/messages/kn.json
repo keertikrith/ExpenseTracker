@@ -24,8 +24,9 @@
   "markets": {
     "title": "ಸ್ಟಾಕ್ ಮಾರುಕಟ್ಟೆ",
     "subtitle": "ಭಾರತೀಯ ಸ್ಟಾಕ್ಗಳ ನೈಜ-ಸಮಯದ ಬೆಲೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ। ಕ್ರಿಪ್ಟೋ ಮತ್ತು ಸುದ್ದಿಗಾಗಿ, ಕೆಳಗಿನ ಮೀಸಲಾದ ಪುಟಗಳನ್ನು ಭೇಟಿ ಮಾಡಿ।",
-    "cryptoLink": "ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
-    "newsLink": "ಹಣಕಾಸು ಸುದ್ದಿ ಓದಿ",
+    "description": "ಭಾರತೀಯ ಸ್ಟಾಕ್‌ಗಳ ನೈಜ-ಸಮಯ ಬೆಲೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ. ಕ್ರಿಪ್ಟೋ ಮತ್ತು ಸುದ್ದಿ, ಕೆಳಗಿನ ಸಮರ್ಪಿತ ಪುಟಗಳಿಗೆ ಭೇಟಿ ನೀಡಿ.",
+    "viewCrypto": "ಕ್ರಿಪ್ಟೋಕರೆನ್ಸಿ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+    "readNews": "ಹಣಕಾಸು ಸುದ್ದಿ ಓದಿ",
     "stockMarketCrypto": "ಸ್ಟಾಕ್ ಮಾರುಕಟ್ಟೆ ಮತ್ತು ಕ್ರಿಪ್ಟೋ",
     "realTimeData": "AI ವಿಶ್ಲೇಷಣೆಯೊಂದಿಗೆ ನೈಜ-ಸಮಯದ ಮಾರುಕಟ್ಟೆ ಡೇಟಾ",
     "indianStocks": "ಭಾರತೀಯ ಸ್ಟಾಕ್ಗಳು",
@@ -95,7 +96,20 @@
     "description": "ನಿಮ್ಮ ಇತ್ತೀಚಿನ ವೆಚ್ಚ ಚಟುವಟಿಕೆಯ ತ್ವರಿತ ಅವಲೋಕನ ಇಲ್ಲಿದೆ. ನಿಮ್ಮ ವೆಚ್ಚವನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ, ಮಾದರಿಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಿ, ಮತ್ತು ನಿಮ್ಮ ಬಜೆಟ್ ಅನ್ನು ಪರಿಣಾಮಕಾರಿಯಾಗಿ ನಿರ್ವಹಿಸಿ!",
     "joined": "ಸೇರಿದರು",
     "lastActive": "ಕೊನೆಯ ಸಕ್ರಿಯ",
-    "today": "ಇಂದು"
+    "today": "ಇಂದು",
+    "expenseHistoryTitle": "ವೆಚ್ಚದ ಇತಿಹಾಸ",
+    "expenseHistorySubtitle": "ನಿಮ್ಮ ವೆಚ್ಚ ಸಮಯರೇಖೆ",
+    "noRecordsFoundTitle": "ಯಾವುದೇ ವೆಚ್ಚ ದಾಖಲೆಗಳು ಕಂಡುಬರಲಿಲ್ಲ",
+    "noRecordsFoundMessage": "ಇಲ್ಲಿ ನಿಮ್ಮ ವೆಚ್ಚ ಇತಿಹಾಸ ಮತ್ತು ಮಾದರಿಗಳನ್ನು ನೋಡಲು ನಿಮ್ಮ ವೆಚ್ಚವನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದು ಪ್ರಾರಂಭಿಸಿ."
+  },
+
+  "expenseStats": {
+    "title": "ವೆಚ್ಚದ ಅಂಕಿಗಳು",
+    "subtitle": "ನಿಮ್ಮ ವೆಚ್ಚದ ಒಳನೋಟಗಳು ಮತ್ತು ಶ್ರೇಣಿಗಳು",
+    "averageDaily": "ಸರಾಸರಿ ದೈನಂದಿನ ಖರ್ಚು",
+    "basedOnDays": "{days} ದಿನಗಳ ವೆಚ್ಚದ ಆಧಾರದ ಮೇಲೆ",
+    "highest": "ಗಗನಚ್ಚು",
+    "lowest": "ಕನಿಷ್ಠ"
   },
   "footer": {
     "brand": "ExpenseTracker AI",
@@ -106,6 +120,53 @@
     "smartCategorization": "ಸ್ಮಾರ್ಟ್ ವರ್ಗೀಕರಣ",
     "analyticsDashboard": "ವಿಶ್ಲೇಷಣೆ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
     "allRightsReserved": "ಎಲ್ಲ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.",
-    "madeBy": "ಸಾಹಂಡ್ ನಿರ್ಮಿಸಿದ್ದಾರೆ"
+    "madeBy": "ಸಾಹಂದ್ ಅವರಿಂದ ರಚಿಸಲಾಗಿದೆ"
+  },
+  "guest": {
+    "hero": {
+      "kicker": "AI-Powered Financial Management",
+      "title": "ExpenseTracker AI",
+      "subtitle": "Track your expenses, manage your budget, and get AI-powered insights to take control of your finances.",
+      "ctaGetStarted": "Get Started Free",
+      "ctaLearnMore": "Learn More"
+    },
+    "features": {
+      "aiInsights": "ವಿಶ್ಲೇಷಣೆ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      "autoCategories": "ಸ್ವಾಯತ್ತ ವರ್ಗೀಕರಣ",
+      "smartDashboard": "ಸ್ಮಾರ್ಟ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      "aiInsightsDesc": "ನಿಮ್ಮ ಖರ್ಚು ಮಾದರಿಗಳ ಸ್ಮಾರ್ಟ್ ವಿಶ್ಲೇಷಣೆ",
+      "autoCategoriesDesc": "ಬುದ್ಧಿವಂತ ವೆಚ್ಚ ವರ್ಗೀಕರಣ",
+      "smartDashboardDesc": "ಸುಂದರ, ಅರ್ಥಪೂರ್ಣ ಹಣಕಾಸು ಅವಲೋಕನ"
+    }
+  },
+  "addNewRecord": {
+    "processing": "Processing...",
+    "addExpense": "Add Expense",
+    "descriptionPlaceholder": "Coffee, groceries, gas...",
+    "amountPlaceholder": "0.00",
+    "subtitle": "Track your spending with AI assistance",
+    "aiSuggestionTitle": "AI Category Suggestion",
+    "analyzingDescription": "AI is analyzing your description..."
+  },
+  "recordChart": {
+    "title": "Expense Chart",
+    "subtitle": "Visual representation of your spending",
+    "errorTitle": "Error loading chart data",
+    "noDataTitle": "No Data to Display",
+    "noDataMessage": "Start tracking your expenses to see your spending patterns visualized in this chart."
+  }
+  ,
+  "recordItem": {
+    "deleteRecord": "ಅಳಿಸಿ",
+    "deleteTitle": "ವೆಚ್ಚದ ದಾಖಲೆ ಅಳಿಸಿ",
+    "category": {
+      "Food": "ಅನ್ನ",
+      "Transportation": "ಸಮಾರಂಭ",
+      "Shopping": "ಖರೀದಿ",
+      "Entertainment": "ಮನರಂಜನೆ",
+      "Bills": "ಬಿಲ್ಲುಗಳು",
+      "Healthcare": "ಆರೋಗ್ಯ",
+      "Other": "ಇನ್ನಷ್ಟು"
+    }
   }
 }
