@@ -1,14 +1,28 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
+import { NextRequest } from 'next/server';
 
 const intlMiddleware = createMiddleware({
   locales: ['en', 'hi', 'kn'],
   defaultLocale: 'en',
   localePrefix: 'always',
-  localeDetection: false // Disable automatic locale detection
+  localeDetection: true, // Enable locale detection
+  alternateLinks: false
 });
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware((auth, req: NextRequest) => {
+  // Check for stored locale preference in cookie
+  const preferredLocale = req.cookies.get('preferred-locale')?.value;
+  
+  if (preferredLocale && ['en', 'hi', 'kn'].includes(preferredLocale)) {
+    // If we have a preferred locale and we're on root path, redirect to preferred locale
+    if (req.nextUrl.pathname === '/') {
+      const url = req.nextUrl.clone();
+      url.pathname = `/${preferredLocale}`;
+      return Response.redirect(url);
+    }
+  }
+  
   return intlMiddleware(req);
 });
 

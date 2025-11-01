@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { generateAIChatResponseAction } from "@/app/actions/generateAIChatResponse";
 import {
   getUserProfile,
@@ -27,7 +27,33 @@ const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
+
+  const locale = useLocale();
+
+  // Load chat history from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedMessages = localStorage.getItem('ai-chat-messages');
+      if (savedMessages) {
+        try {
+          const parsedMessages = JSON.parse(savedMessages);
+          setMessages(parsedMessages.map((msg: Record<string, unknown>) => ({
+            ...msg,
+            timestamp: new Date(String(msg.timestamp))
+          })));
+        } catch (error) {
+          console.error('Error loading chat history:', error);
+        }
+      }
+    }
+  }, []);
+
+  // Save chat history to localStorage whenever messages change
+  useEffect(() => {
+    if (typeof window !== 'undefined' && messages.length > 0) {
+      localStorage.setItem('ai-chat-messages', JSON.stringify(messages));
+    }
+  }, [messages]);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [showProfileSetup, setShowProfileSetup] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -43,51 +69,6 @@ const AIChat = () => {
     occupation: "",
   });
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const goals: Goal[] = [
-    {
-      id: "budget-planning",
-      title: "Budget Planning",
-      description: "Get personalized budget recommendations",
-      prompt:
-        "Help me create a comprehensive budget plan based on my income and expenses. Analyze my spending patterns and suggest realistic budget allocations for different categories.",
-    },
-    {
-      id: "debt-management",
-      title: "Debt Management",
-      description: "Strategies to pay off debt faster",
-      prompt:
-        "I need help managing my debt. Analyze my financial situation and provide strategies to pay off debt faster, including debt consolidation options and payment prioritization.",
-    },
-    {
-      id: "investment-advice",
-      title: "Investment Advice",
-      description: "Investment strategies and portfolio building",
-      prompt:
-        "Help me understand investment options suitable for my financial goals. Provide guidance on portfolio diversification, risk management, and long-term wealth building strategies.",
-    },
-    {
-      id: "saving-strategies",
-      title: "Saving Strategies",
-      description: "Tips to increase savings rate",
-      prompt:
-        "Analyze my spending habits and provide specific strategies to increase my savings rate. Include tips on reducing expenses and increasing income.",
-    },
-    {
-      id: "financial-goals",
-      title: "Financial Goals",
-      description: "Set and track financial milestones",
-      prompt:
-        "Help me set realistic financial goals and create a roadmap to achieve them. Include short-term and long-term goal planning with actionable steps.",
-    },
-    {
-      id: "expense-optimization",
-      title: "Expense Optimization",
-      description: "Reduce unnecessary spending",
-      prompt:
-        "Review my expense patterns and identify areas where I can reduce spending without compromising my lifestyle. Provide specific recommendations for cost-cutting.",
-    },
-  ];
 
   useEffect(() => {
     loadUserProfile();
@@ -115,8 +96,52 @@ const AIChat = () => {
 
   const t = useTranslations("ai");
 
+  const goals: Goal[] = [
+    {
+      id: "budget-planning",
+      title: t("goals.budgetPlanning.title"),
+      description: t("goals.budgetPlanning.description"),
+      prompt:
+        "Help me create a comprehensive budget plan based on my income and expenses. Analyze my spending patterns and suggest realistic budget allocations for different categories.",
+    },
+    {
+      id: "debt-management",
+      title: t("goals.debtManagement.title"),
+      description: t("goals.debtManagement.description"),
+      prompt:
+        "I need help managing my debt. Analyze my financial situation and provide strategies to pay off debt faster, including debt consolidation options and payment prioritization.",
+    },
+    {
+      id: "investment-advice",
+      title: t("goals.investmentAdvice.title"),
+      description: t("goals.investmentAdvice.description"),
+      prompt:
+        "Help me understand investment options suitable for my financial goals. Provide guidance on portfolio diversification, risk management, and long-term wealth building strategies.",
+    },
+    {
+      id: "saving-strategies",
+      title: t("goals.savingStrategies.title"),
+      description: t("goals.savingStrategies.description"),
+      prompt:
+        "Analyze my spending habits and provide specific strategies to increase my savings rate. Include tips on reducing expenses and increasing income.",
+    },
+    {
+      id: "financial-goals",
+      title: t("goals.financialGoals.title"),
+      description: t("goals.financialGoals.description"),
+      prompt:
+        "Help me set realistic financial goals and create a roadmap to achieve them. Include short-term and long-term goal planning with actionable steps.",
+    },
+    {
+      id: "expense-optimization",
+      title: t("goals.expenseOptimization.title"),
+      description: t("goals.expenseOptimization.description"),
+      prompt:
+        "Review my expense patterns and identify areas where I can reduce spending without compromising my lifestyle. Provide specific recommendations for cost-cutting.",
+    },
+  ];
+
   const handleGoalClick = (goal: Goal) => {
-    setSelectedGoal(goal);
     const newMessage: Message = {
       id: `goal-${Date.now()}`,
       role: "user",
@@ -125,6 +150,13 @@ const AIChat = () => {
     };
     setMessages((prev) => [...prev, newMessage]);
     handleSendMessage(goal.prompt);
+  };
+
+  const clearChatHistory = () => {
+    setMessages([]);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('ai-chat-messages');
+    }
   };
 
   const handleSendMessage = async (message?: string) => {
@@ -151,7 +183,8 @@ const AIChat = () => {
       const response = await generateAIChatResponseAction(
         messageToSend,
         userProfile,
-        conversationHistory
+        conversationHistory,
+        locale
       );
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,
@@ -183,7 +216,6 @@ const AIChat = () => {
 
   const clearChat = () => {
     setMessages([]);
-    setSelectedGoal(null);
   };
 
   const handleProfileSubmit = async () => {
@@ -249,6 +281,13 @@ const AIChat = () => {
         </div>
         <div className="flex items-center gap-2">
           <button
+            onClick={clearChatHistory}
+            className="px-3 py-1.5 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-700 dark:text-red-300 rounded-lg text-xs font-medium transition-colors duration-200"
+            title="Clear chat history"
+          >
+            Clear
+          </button>
+          <button
             onClick={() => setShowProfileSetup(true)}
             className="px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium transition-colors duration-200"
           >
@@ -268,14 +307,14 @@ const AIChat = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Set Up Your Financial Profile
+              {t("profileSetup.title")}
             </h3>
 
             <div className="space-y-4">
               {/* Financial Goals */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Financial Goals
+                  {t("profileSetup.financialGoals")}
                 </label>
                 {profileForm.financialGoals.map((goal, index) => (
                   <div key={index} className="flex gap-2 mb-2">
@@ -294,7 +333,7 @@ const AIChat = () => {
                       onClick={() => removeFinancialGoal(index)}
                       className="px-3 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50"
                     >
-                      Remove
+                      {t("profileSetup.remove")}
                     </button>
                   </div>
                 ))}
@@ -302,14 +341,14 @@ const AIChat = () => {
                   onClick={addFinancialGoal}
                   className="px-3 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/50 text-sm"
                 >
-                  + Add Goal
+                  {t("profileSetup.addGoal")}
                 </button>
               </div>
 
               {/* Risk Tolerance */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Risk Tolerance
+                  {t("profileSetup.riskTolerance")}
                 </label>
                 <select
                   value={profileForm.riskTolerance}
@@ -324,16 +363,16 @@ const AIChat = () => {
                   }
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
-                  <option value="low">Low Risk</option>
-                  <option value="medium">Medium Risk</option>
-                  <option value="high">High Risk</option>
+                  <option value="low">{t("profileSetup.lowRisk")}</option>
+                  <option value="medium">{t("profileSetup.mediumRisk")}</option>
+                  <option value="high">{t("profileSetup.highRisk")}</option>
                 </select>
               </div>
 
               {/* Investment Experience */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Investment Experience
+                  {t("profileSetup.investmentExperience")}
                 </label>
                 <select
                   value={profileForm.investmentExperience}
@@ -348,16 +387,16 @@ const AIChat = () => {
                   }
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
+                  <option value="beginner">{t("profileSetup.beginner")}</option>
+                  <option value="intermediate">{t("profileSetup.intermediate")}</option>
+                  <option value="advanced">{t("profileSetup.advanced")}</option>
                 </select>
               </div>
 
               {/* Monthly Income */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Monthly Income (₹)
+                  {t("profileSetup.monthlyIncome")}
                 </label>
                 <input
                   type="number"
@@ -368,7 +407,7 @@ const AIChat = () => {
                       monthlyIncome: e.target.value,
                     }))
                   }
-                  placeholder="Enter your monthly income"
+                  placeholder={t("profileSetup.monthlyIncomePlaceholder")}
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
@@ -376,7 +415,7 @@ const AIChat = () => {
               {/* Monthly Expenses */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Monthly Expenses (₹)
+                  {t("profileSetup.monthlyExpenses")}
                 </label>
                 <input
                   type="number"
@@ -387,7 +426,7 @@ const AIChat = () => {
                       monthlyExpenses: e.target.value,
                     }))
                   }
-                  placeholder="Enter your monthly expenses"
+                  placeholder={t("profileSetup.monthlyExpensesPlaceholder")}
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
@@ -395,7 +434,7 @@ const AIChat = () => {
               {/* Age */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Age
+                  {t("profileSetup.age")}
                 </label>
                 <input
                   type="number"
@@ -403,7 +442,7 @@ const AIChat = () => {
                   onChange={(e) =>
                     setProfileForm((prev) => ({ ...prev, age: e.target.value }))
                   }
-                  placeholder="Enter your age"
+                  placeholder={t("profileSetup.agePlaceholder")}
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
@@ -411,7 +450,7 @@ const AIChat = () => {
               {/* Occupation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Occupation
+                  {t("profileSetup.occupation")}
                 </label>
                 <input
                   type="text"
@@ -422,7 +461,7 @@ const AIChat = () => {
                       occupation: e.target.value,
                     }))
                   }
-                  placeholder="Enter your occupation"
+                  placeholder={t("profileSetup.occupationPlaceholder")}
                   className="w-full p-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
@@ -433,13 +472,13 @@ const AIChat = () => {
                 onClick={handleProfileSubmit}
                 className="flex-1 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-lg font-medium transition-all duration-200"
               >
-                Save Profile
+                {t("profileSetup.saveProfile")}
               </button>
               <button
                 onClick={() => setShowProfileSetup(false)}
                 className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors duration-200"
               >
-                Cancel
+                {t("profileSetup.cancel")}
               </button>
             </div>
           </div>
@@ -450,7 +489,7 @@ const AIChat = () => {
       {messages.length === 0 && (
         <div className="p-4 sm:p-6">
           <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
-            Choose a financial goal to get started:
+            {t("chooseGoal")}
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {goals.map((goal) => (

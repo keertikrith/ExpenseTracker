@@ -19,8 +19,24 @@ interface UserProfile {
   occupation?: string;
 }
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Initialize Gemini AI with multiple API keys for fallback
+const API_KEYS = [
+  process.env.GEMINI_API_KEY || '',
+  process.env.GEMINI_API_KEY_2 || '',
+  process.env.GEMINI_API_KEY_3 || ''
+].filter(key => key.length > 0);
+
+let currentKeyIndex = 0;
+
+function getNextApiKey(): string {
+  const key = API_KEYS[currentKeyIndex];
+  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+  return key;
+}
+
+function createGenAI(apiKey?: string): GoogleGenerativeAI {
+  return new GoogleGenerativeAI(apiKey || getNextApiKey());
+}
 
 export interface ExpenseRecord {
   id: string;
@@ -41,9 +57,11 @@ export interface AIInsight {
 
 export async function generateExpenseInsights(
   expenses: ExpenseRecord[],
-  userProfile?: UserProfile
+  userProfile?: UserProfile,
+  locale?: string
 ): Promise<AIInsight[]> {
   try {
+    const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // Prepare expense data for AI analysis
@@ -65,7 +83,14 @@ export async function generateExpenseInsights(
     - Occupation: ${userProfile.occupation || 'Not specified'}
     ` : '';
 
-    const prompt = `Analyze the following expense data and provide 3-4 actionable financial insights tailored to the user's profile.
+    // Determine language instruction based on locale
+    const languageInstruction = locale === 'hi'
+      ? 'Respond in Hindi language.'
+      : locale === 'kn'
+        ? 'Respond in Kannada language.'
+        : 'Respond in English language.';
+
+    const prompt = `${languageInstruction} Analyze the following expense data and provide 3-4 actionable financial insights tailored to the user's profile.
     ${userContext}
     
     Expense Data:
@@ -141,6 +166,7 @@ export async function generateExpenseInsights(
 
 export async function categorizeExpense(description: string): Promise<string> {
   try {
+    const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `Categorize this expense description into one of these categories: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, Other. 
@@ -179,6 +205,7 @@ export async function generateAIAnswer(
   userProfile?: UserProfile
 ): Promise<string> {
   try {
+    const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const expensesSummary = context.map((expense) => ({
@@ -226,49 +253,86 @@ export async function generateAIAnswer(
 export async function generateAIChatResponse(
   message: string,
   userProfile?: UserProfile,
-  conversationHistory?: Array<{role: string, content: string}>,
-  locale: string = 'en'
+  conversationHistory?: Array<{ role: string; content: string }>,
+  locale: string = 'en',
+  expenseData?: ExpenseRecord[]
 ): Promise<string> {
-  try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  let lastError: unknown = null;
 
-    const userContext = userProfile ? `
+  // Try each API key until one works
+  for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
+    try {
+      const apiKey = getNextApiKey();
+      const genAI = createGenAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-2.5-flash',
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        },
+      });
+
+      const userContext = userProfile ? `
     User Profile Context:
     - Financial Goals: ${userProfile.financialGoals.join(', ')}
     - Risk Tolerance: ${userProfile.riskTolerance}
     - Investment Experience: ${userProfile.investmentExperience}
-    - Monthly Income: ${userProfile.monthlyIncome || 'Not specified'}
-    - Monthly Expenses: ${userProfile.monthlyExpenses || 'Not specified'}
+    - Monthly Income: ₹${userProfile.monthlyIncome || 'Not specified'}
+    - Monthly Expenses: ₹${userProfile.monthlyExpenses || 'Not specified'}
     - Age: ${userProfile.age || 'Not specified'}
     - Occupation: ${userProfile.occupation || 'Not specified'}
     ` : '';
 
-    const conversationContext = conversationHistory ? `
+      const expenseContext = expenseData && expenseData.length > 0 ? `
+    Recent Expense Data:
+    ${expenseData.slice(-10).map(expense =>
+        `- ₹${expense.amount} on ${expense.category} (${expense.description}) - ${new Date(expense.date).toLocaleDateString()}`
+      ).join('\n')}
+    
+    Total Recent Expenses: ₹${expenseData.slice(-10).reduce((sum, exp) => sum + exp.amount, 0)}
+    ` : '';
+
+      const conversationContext = conversationHistory ? `
     Recent conversation:
     ${conversationHistory.slice(-6).map(msg => `${msg.role}: ${msg.content}`).join('\n')}
     ` : '';
 
-    const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. ${locale === 'hi' ? 'Respond in Hindi (हिन्दी). Use Devanagari script.' : locale === 'kn' ? 'Respond in Kannada (ಕನ್ನಡ). Use Kannada script.' : 'Respond in English.'}
+      const localeInstructions = {
+        'hi': 'आपको हिंदी में जवाब देना है। देवनागरी लिपि का उपयोग करें। भारतीय रुपये (₹) का उपयोग करें।',
+        'kn': 'ನೀವು ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಬೇಕು। ಕನ್ನಡ ಲಿಪಿಯನ್ನು ಬಳಸಿ। ಭಾರತೀಯ ರೂಪಾಯಿ (₹) ಬಳಸಿ।',
+        'en': 'Respond in English. Use Indian Rupees (₹) for all currency references.'
+      };
+
+      const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. 
+
+    IMPORTANT: ${localeInstructions[locale as keyof typeof localeInstructions] || localeInstructions.en}
 
     ${userContext}
+    ${expenseContext}
     ${conversationContext}
 
     The user is asking: "${message}"
 
+    ${expenseData && expenseData.length > 0 ? 'Use the expense data provided to give personalized advice based on their actual spending patterns.' : ''}
+
     Provide a comprehensive, helpful response that:
     1. Directly addresses their question or concern
-    2. Offers practical, actionable advice tailored to their profile
-    3. Uses clear, easy-to-understand language
-    4. Includes specific steps or recommendations when appropriate
-    5. Maintains a professional yet friendly tone
-    6. Keeps responses concise but informative (2-4 sentences)
-    7. Considers Indian financial context (tax benefits, investment options, etc.)
+    2. References their actual expense data when relevant and available
+    3. Offers practical, actionable advice tailored to their profile and spending
+    4. Uses clear, easy-to-understand language in the specified locale
+    5. Includes specific steps or recommendations when appropriate
+    6. Maintains a professional yet friendly tone
+    7. Keeps responses concise but informative (2-4 sentences)
+    8. Uses Indian Rupees (₹) for all currency references
+    9. Considers Indian financial context (tax benefits, investment options, etc.)
 
     Focus on:
-    - Budget planning and expense management
+    - Budget planning and expense management based on their actual spending
     - Debt reduction strategies
     - Investment guidance and portfolio building (including Indian mutual funds, stocks, PPF, etc.)
-    - Savings optimization
+    - Savings optimization based on their expense patterns
     - Financial goal setting
     - Risk management
     - Tax optimization strategies (Indian tax laws)
@@ -277,20 +341,46 @@ export async function generateAIChatResponse(
 
     Return only the response text, no additional formatting or disclaimers.`;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
 
-    return text.trim();
-  } catch (error) {
-    console.error('❌ Error generating AI chat response:', error);
-    return "I'm sorry, I'm having trouble processing your request right now. Please try again in a moment, or feel free to ask a different question about your finances.";
+      return text.trim();
+    } catch (error: unknown) {
+      lastError = error;
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`❌ Error with API key ${attempt + 1}:`, errorMessage);
+
+      // If it's a quota error, try next key
+      const errorStatus = (error as { status?: number })?.status;
+      if (errorStatus === 429 || errorMessage?.includes('quota') || errorMessage?.includes('rate limit')) {
+        console.log(`🔄 Quota exceeded for API key ${attempt + 1}, trying next key...`);
+        continue;
+      }
+
+      // For other errors, also try next key
+      if (attempt < API_KEYS.length - 1) {
+        console.log(`🔄 Error with API key ${attempt + 1}, trying next key...`);
+        continue;
+      }
+    }
   }
+
+  // All API keys failed
+  console.error('❌ All Gemini API keys failed:', lastError);
+
+  const fallbackMessages = {
+    'hi': 'मुझे खुशी होगी कि मैं आपकी मदद कर सकूं, लेकिन अभी मुझे तकनीकी समस्या का सामना करना पड़ रहा है। कृपया कुछ देर बाद पुनः प्रयास करें।',
+    'kn': 'ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಸಂತೋಷಪಡುತ್ತೇನೆ, ಆದರೆ ಇದೀಗ ತಾಂತ್ರಿಕ ಸಮಸ್ಯೆಯನ್ನು ಎದುರಿಸುತ್ತಿದ್ದೇನೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+    'en': "I'd be happy to help you, but I'm experiencing technical difficulties right now. Please try again in a moment."
+  };
+
+  return fallbackMessages[locale as keyof typeof fallbackMessages] || fallbackMessages.en;
 }
 
 export async function generateStockAnalysis(
   symbol: string,
-  stockData: any,
+  stockData: Record<string, unknown>,
   userProfile?: UserProfile,
   locale: string = 'en'
 ): Promise<{
@@ -300,6 +390,7 @@ export async function generateStockAnalysis(
   reasoning: string[];
 }> {
   try {
+    const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const userContext = userProfile ? `
@@ -311,11 +402,11 @@ export async function generateStockAnalysis(
     ` : '';
 
     // Language instruction based on locale
-    const languageInstruction = locale === 'hi' 
-      ? 'Respond in Hindi (हिन्दी). Use Devanagari script.' 
-      : locale === 'kn' 
-      ? 'Respond in Kannada (ಕನ್ನಡ). Use Kannada script.'
-      : 'Respond in English.';
+    const languageInstruction = locale === 'hi'
+      ? 'Respond in Hindi (हिन्दी). Use Devanagari script.'
+      : locale === 'kn'
+        ? 'Respond in Kannada (ಕನ್ನಡ). Use Kannada script.'
+        : 'Respond in English.';
 
     const prompt = `Analyze this Indian stock and provide investment advice. ${languageInstruction} Use the provided stock symbol exactly in your analysis and compute a numeric rating from 0 to 100 (where 0 is very bearish and 100 is very bullish). Do not default to 50. Return JSON only.
 
@@ -393,6 +484,7 @@ export async function translateText(text: string, targetLocale: string): Promise
   try {
     if (!text) return text;
     if (!targetLocale || targetLocale === 'en') return text;
+    const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `Translate the following text to ${targetLocale}. Return ONLY the translated text without quotes or extra commentary.\n\nText: ${text}`;
     const res = await model.generateContent(prompt);

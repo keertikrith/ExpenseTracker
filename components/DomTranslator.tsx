@@ -17,7 +17,7 @@ export default function DomTranslator({ locale }: Props) {
   useEffect(() => {
     if (!locale || locale === "en") return; // nothing to do for English
 
-    const STORAGE_KEY = `dom-trans-${locale}`;
+    const STORAGE_KEY = `dom-trans-${locale}-v2`;
     const cacheRaw = localStorage.getItem(STORAGE_KEY);
     const cache: Record<string, string> = cacheRaw ? JSON.parse(cacheRaw) : {};
 
@@ -35,7 +35,7 @@ export default function DomTranslator({ locale }: Props) {
             return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
         },
-      } as any
+      } as NodeFilter
     );
 
     const toTranslate: Set<string> = new Set();

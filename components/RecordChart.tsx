@@ -2,9 +2,9 @@ import getRecords from "@/app/actions/getRecords";
 import BarChart from "./BarChart"; // Ensure BarChart.tsx or BarChart.jsx exists in the same directory
 import { getTranslations } from "next-intl/server";
 
-const RecordChart = async () => {
+const RecordChart = async ({ locale = "en" }: { locale?: string }) => {
   const { records, error } = await getRecords();
-  const t = await getTranslations("recordChart");
+  const t = await getTranslations({ locale, namespace: "recordChart" });
 
   if (error) {
     return (

@@ -1,6 +1,15 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 
 const AboutPage = () => {
+  const t = useTranslations('about');
+  const locale = useLocale();
+  
+  // Debug logging
+  console.log('About page locale:', locale);
+  console.log('About hero title:', t('hero.title'));
   return (
     <div className='font-sans bg-gradient-to-br from-gray-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900/20 text-gray-800 dark:text-gray-200 transition-all duration-300 min-h-screen'>
       {/* Hero Section */}
@@ -9,32 +18,28 @@ const AboutPage = () => {
         <div className='relative z-10 max-w-4xl mx-auto w-full'>
           <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg'>
             <span className='w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse'></span>
-            <span className='hidden sm:inline'>Powered by AI Technology</span>
-            <span className='sm:hidden'>AI Technology</span>
+            <span className='hidden sm:inline'>{t('hero.kicker')}</span>
+            <span className='sm:hidden'>{t('hero.kicker')}</span>
           </div>
           <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-gray-100 leading-tight'>
-            About{' '}
-            <span className='bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent'>
-              ExpenseTracker AI
-            </span>
+            {t('hero.title')}
           </h1>
           <p className='text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0'>
-            Your intelligent companion for tracking expenses and managing your
-            finances with cutting-edge AI-powered insights.
+            {t('hero.subtitle')}
           </p>
           <div className='mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2 sm:px-0'>
             <Link
               href='/sign-up'
               className='group relative overflow-hidden bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold shadow-2xl hover:shadow-3xl transition-all duration-200 transform hover:-translate-y-0.5'
             >
-              <span className='relative z-10'>Start Your Journey</span>
+              <span className='relative z-10'>{t('hero.ctaStart')}</span>
               <div className='absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
             </Link>
             <Link
               href='/contact'
               className='group border-2 border-emerald-500/20 dark:border-emerald-400/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold transition-all duration-200 backdrop-blur-sm'
             >
-              Learn More
+              {t('hero.ctaLearn')}
             </Link>
           </div>
         </div>
@@ -46,42 +51,37 @@ const AboutPage = () => {
         <div className='max-w-4xl mx-auto text-center'>
           <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6'>
             <span className='w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full'></span>
-            Our Mission
+            {t('mission.kicker')}
           </div>
           <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-gray-900 dark:text-gray-100 px-2 sm:px-0'>
-            Transforming Financial Management with{' '}
-            <span className='text-emerald-600 dark:text-emerald-400'>AI</span>
+            {t('mission.title')}
           </h2>
           <p className='text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto'>
-            At FinvestorAI, we leverage cutting-edge artificial
-            intelligence to revolutionize how individuals achieve financial
-            wellness. Our AI analyzes your spending patterns to deliver
-            personalized recommendations and actionable insights that lead to
-            better budgeting and financial freedom.
+            {t('mission.description')}
           </p>
           <div className='mt-10 grid grid-cols-1 md:grid-cols-3 gap-6'>
             <div className='bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800/50'>
               <div className='text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2'>
-                10K+
+                {t('mission.stats.users')}
               </div>
               <div className='text-gray-600 dark:text-gray-400 font-medium'>
-                Active Users
+                {t('mission.stats.usersLabel')}
               </div>
             </div>
             <div className='bg-gradient-to-br from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 p-6 rounded-2xl border border-green-100 dark:border-green-800/50'>
               <div className='text-3xl font-bold text-green-600 dark:text-green-400 mb-2'>
-                $2M+
+                {t('mission.stats.money')}
               </div>
               <div className='text-gray-600 dark:text-gray-400 font-medium'>
-                Money Tracked
+                {t('mission.stats.moneyLabel')}
               </div>
             </div>
             <div className='bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-900/20 dark:to-emerald-900/20 p-6 rounded-2xl border border-teal-100 dark:border-teal-800/50'>
               <div className='text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2'>
-                99%
+                {t('mission.stats.satisfaction')}
               </div>
               <div className='text-gray-600 dark:text-gray-400 font-medium'>
-                Satisfaction Rate
+                {t('mission.stats.satisfactionLabel')}
               </div>
             </div>
           </div>
@@ -94,17 +94,13 @@ const AboutPage = () => {
           <div className='text-center mb-16'>
             <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-sm font-medium mb-6'>
               <span className='w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full'></span>
-              Features
+              {t('features.kicker')}
             </div>
             <h2 className='text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-gray-100'>
-              Why Choose{' '}
-              <span className='text-emerald-600 dark:text-emerald-400'>
-                ExpenseTracker AI?
-              </span>
+              {t('features.title')}
             </h2>
             <p className='text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-              Discover the powerful features that make our AI-driven platform
-              the smart choice for modern financial management.
+              {t('features.subtitle')}
             </p>
           </div>
 
@@ -116,12 +112,10 @@ const AboutPage = () => {
                   <span className='text-white text-xl'>🤖</span>
                 </div>
                 <h3 className='text-xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-                  AI-Powered Insights
+                  {t('features.aiInsights.title')}
                 </h3>
                 <p className='text-gray-600 dark:text-gray-400 leading-relaxed'>
-                  Get intelligent analysis of your spending patterns with
-                  personalized AI recommendations and automated category
-                  suggestions that learn from your behavior.
+                  {t('features.aiInsights.description')}
                 </p>
               </div>
             </div>
@@ -133,12 +127,10 @@ const AboutPage = () => {
                   <span className='text-white text-xl'>✨</span>
                 </div>
                 <h3 className='text-xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-                  Smart Categorization
+                  {t('features.smartCategorization.title')}
                 </h3>
                 <p className='text-gray-600 dark:text-gray-400 leading-relaxed'>
-                  Let our AI automatically categorize your expenses with 99%
-                  accuracy and provide tailored recommendations to enhance your
-                  budget management effortlessly.
+                  {t('features.smartCategorization.description')}
                 </p>
               </div>
             </div>
@@ -150,12 +142,10 @@ const AboutPage = () => {
                   <span className='text-white text-xl'>📊</span>
                 </div>
                 <h3 className='text-xl font-bold mb-4 text-gray-900 dark:text-gray-100'>
-                  Intelligent Dashboard
+                  {t('features.intelligentDashboard.title')}
                 </h3>
                 <p className='text-gray-600 dark:text-gray-400 leading-relaxed'>
-                  Experience a modern, AI-enhanced interface with real-time
-                  insights, interactive financial analytics, and beautiful
-                  visualizations that make sense of your data.
+                  {t('features.intelligentDashboard.description')}
                 </p>
               </div>
             </div>
@@ -172,30 +162,20 @@ const AboutPage = () => {
           <div className='text-center mb-12'>
             <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-sm font-medium mb-6'>
               <span className='w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full'></span>
-              Our Story
+              {t('story.kicker')}
             </div>
             <h2 className='text-4xl md:text-5xl font-bold mb-8 text-gray-900 dark:text-gray-100'>
-              Built for the{' '}
-              <span className='text-emerald-600 dark:text-emerald-400'>
-                Future
-              </span>
+              {t('story.title')}
             </h2>
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-12 items-center'>
             <div className='space-y-6'>
               <p className='text-lg text-gray-600 dark:text-gray-400 leading-relaxed'>
-                FinvestorAI was born from the vision of creating truly
-                intelligent financial management tools. Our team of financial
-                experts, data scientists, and technologists came together to
-                solve a critical problem: making personal finance management
-                smarter, more intuitive, and more effective.
+                {t('story.description1')}
               </p>
               <p className='text-lg text-gray-600 dark:text-gray-400 leading-relaxed'>
-                Since our launch, we&#39;ve helped thousands of users achieve
-                better budgeting and improve their overall financial health
-                through the power of artificial intelligence. Every feature is
-                designed with user experience and financial wellness in mind.
+                {t('story.description2')}
               </p>
               <div className='flex items-center gap-4 pt-4'>
                 <div className='flex -space-x-2'>
@@ -204,8 +184,8 @@ const AboutPage = () => {
                   <div className='w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-full border-2 border-white dark:border-gray-800'></div>
                 </div>
                 <div className='text-sm text-gray-600 dark:text-gray-400'>
-                  <div className='font-semibold'>Trusted by 10,000+ users</div>
-                  <div>Join our growing community</div>
+                  <div className='font-semibold'>{t('story.trustedBy')}</div>
+                  <div>{t('story.joinCommunity')}</div>
                 </div>
               </div>
             </div>
@@ -215,25 +195,25 @@ const AboutPage = () => {
                 <div className='flex items-center gap-4'>
                   <div className='w-3 h-3 bg-emerald-500 dark:bg-emerald-400 rounded-full'></div>
                   <div className='text-gray-900 dark:text-gray-100 font-medium'>
-                    Founded in 2024
+                    {t('story.timeline.founded')}
                   </div>
                 </div>
                 <div className='flex items-center gap-4'>
                   <div className='w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full'></div>
                   <div className='text-gray-900 dark:text-gray-100 font-medium'>
-                    AI-First Approach
+                    {t('story.timeline.aiFirst')}
                   </div>
                 </div>
                 <div className='flex items-center gap-4'>
                   <div className='w-3 h-3 bg-teal-500 dark:bg-teal-400 rounded-full'></div>
                   <div className='text-gray-900 dark:text-gray-100 font-medium'>
-                    Global Impact
+                    {t('story.timeline.global')}
                   </div>
                 </div>
                 <div className='flex items-center gap-4'>
                   <div className='w-3 h-3 bg-emerald-500 dark:bg-emerald-400 rounded-full'></div>
                   <div className='text-gray-900 dark:text-gray-100 font-medium'>
-                    User-Centric Design
+                    {t('story.timeline.userCentric')}
                   </div>
                 </div>
               </div>
@@ -250,20 +230,15 @@ const AboutPage = () => {
         <div className='max-w-4xl mx-auto text-center relative z-10'>
           <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-lg'>
             <span className='w-2 h-2 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse'></span>
-            Ready to Transform Your Finances?
+            {t('cta.kicker')}
           </div>
 
           <h2 className='text-4xl md:text-6xl font-bold mb-6 leading-tight text-gray-900 dark:text-gray-100'>
-            Take Control of Your{' '}
-            <span className='bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent'>
-              Financial Future
-            </span>
+            {t('cta.title')}
           </h2>
 
           <p className='text-xl md:text-2xl mb-10 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed'>
-            Join thousands of users who have already transformed their financial
-            habits with FinvestorAI. Start your journey towards smarter
-            budgeting today.
+            {t('cta.subtitle')}
           </p>
 
           <div className='flex flex-col sm:flex-row gap-6 justify-center items-center'>
@@ -272,7 +247,7 @@ const AboutPage = () => {
               className='group relative overflow-hidden bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-200 transform hover:-translate-y-0.5'
             >
               <span className='relative z-10 flex items-center gap-2'>
-                Get Started Free
+                {t('cta.getStarted')}
                 <span className='text-lg'>→</span>
               </span>
               <div className='absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
@@ -282,7 +257,7 @@ const AboutPage = () => {
               href='/contact'
               className='group border-2 border-emerald-500/20 dark:border-emerald-400/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 px-8 py-4 rounded-2xl font-semibold transition-all duration-200 backdrop-blur-sm flex items-center gap-2'
             >
-              Contact Us
+              {t('cta.contact')}
               <span className='text-lg group-hover:translate-x-0.5 transition-transform duration-200'>
                 💬
               </span>
@@ -292,26 +267,26 @@ const AboutPage = () => {
           <div className='mt-12 grid grid-cols-1 md:grid-cols-3 gap-8'>
             <div className='text-center'>
               <div className='text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2'>
-                Free
+                {t('cta.benefits.free')}
               </div>
               <div className='text-gray-600 dark:text-gray-400'>
-                No credit card required
+                {t('cta.benefits.freeDesc')}
               </div>
             </div>
             <div className='text-center'>
               <div className='text-3xl font-bold text-green-600 dark:text-green-400 mb-2'>
-                24/7
+                {t('cta.benefits.support')}
               </div>
               <div className='text-gray-600 dark:text-gray-400'>
-                AI-powered support
+                {t('cta.benefits.supportDesc')}
               </div>
             </div>
             <div className='text-center'>
               <div className='text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2'>
-                Instant
+                {t('cta.benefits.setup')}
               </div>
               <div className='text-gray-600 dark:text-gray-400'>
-                Setup in minutes
+                {t('cta.benefits.setupDesc')}
               </div>
             </div>
           </div>

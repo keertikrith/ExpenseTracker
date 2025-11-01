@@ -1,4 +1,6 @@
 {
+  "_updated": "2025-10-29T00:05:50",
+  "_version": "2024-10-29-v11",
   "common": {
     "home": "Home",
     "aiChat": "AI Chat",
@@ -15,7 +17,95 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
-    "info": "Info"
+    "info": "Info",
+    "welcome": "Welcome",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "add": "Add",
+    "remove": "Remove",
+    "update": "Update",
+    "create": "Create",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "import": "Import",
+    "settings": "Settings",
+    "profile": "Profile",
+    "account": "Account",
+    "dashboard": "Dashboard",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "help": "Help",
+    "support": "Support",
+    "documentation": "Documentation",
+    "tutorial": "Tutorial",
+    "guide": "Guide",
+    "faq": "FAQ",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "changePassword": "Change Password",
+    "confirmPassword": "Confirm Password",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "fullName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "zipCode": "ZIP Code",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "language": "Language",
+    "currency": "Currency",
+    "timezone": "Timezone",
+    "notifications": "Notifications",
+    "preferences": "Preferences",
+    "amount": "Amount",
+    "total": "Total",
+    "average": "Average",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "spending": "Spending",
+    "chart": "Chart",
+    "statistics": "Statistics",
+    "insights": "Insights",
+    "patterns": "Patterns",
+    "trends": "Trends",
+    "overview": "Overview",
+    "summary": "Summary",
+    "details": "Details",
+    "history": "History",
+    "recent": "Recent",
+    "activity": "Activity",
+    "visual": "Visual",
+    "representation": "Representation",
+    "data": "Data",
+    "analysis": "Analysis",
+    "justNow": "Just now",
+    "minutesAgo": "{minutes}m ago",
+    "hoursAgo": "{hours}h ago",
+    "ago": "ago"
   },
   "navbar": {
     "title": "ExpenseTracker AI",
@@ -76,7 +166,8 @@
     "placeholderSource2": "Crypto News",
     "placeholderTitle3": "Economic Growth Forecast",
     "placeholderDesc3": "Experts predict continued economic growth for India with focus on digital transformation and infrastructure development.",
-    "placeholderSource3": "Economic Times"
+    "placeholderSource3": "Economic Times",
+    "tryAgain": "Try Again"
   },
   "ai": {
     "chatTitle": "AI Financial Assistant",
@@ -86,7 +177,58 @@
     "thinking": "Thinking...",
     "unableToRespond": "I'm unable to provide a response at the moment. Please try again.",
     "welcomeMessage": "Hello! I'm your AI financial assistant. How can I help you today?",
-    "goalInputPlaceholder": "Enter a financial goal"
+    "goalInputPlaceholder": "Enter a financial goal",
+    "chooseGoal": "Choose a financial goal to get started:",
+    "profileSetup": {
+      "title": "Set Up Your Financial Profile",
+      "financialGoals": "Financial Goals",
+      "remove": "Remove",
+      "addGoal": "+ Add Goal",
+      "riskTolerance": "Risk Tolerance",
+      "lowRisk": "Low Risk",
+      "mediumRisk": "Medium Risk", 
+      "highRisk": "High Risk",
+      "investmentExperience": "Investment Experience",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "monthlyIncome": "Monthly Income (₹)",
+      "monthlyIncomePlaceholder": "Enter your monthly income",
+      "monthlyExpenses": "Monthly Expenses (₹)",
+      "monthlyExpensesPlaceholder": "Enter your monthly expenses",
+      "age": "Age",
+      "agePlaceholder": "Enter your age",
+      "occupation": "Occupation",
+      "occupationPlaceholder": "Enter your occupation",
+      "saveProfile": "Save Profile",
+      "cancel": "Cancel"
+    },
+    "goals": {
+      "budgetPlanning": {
+        "title": "Budget Planning",
+        "description": "Get personalized budget recommendations"
+      },
+      "debtManagement": {
+        "title": "Debt Management",
+        "description": "Strategies to pay off debt faster"
+      },
+      "investmentAdvice": {
+        "title": "Investment Advice",
+        "description": "Investment strategies and portfolio building"
+      },
+      "savingStrategies": {
+        "title": "Saving Strategies",
+        "description": "Tips to increase savings rate"
+      },
+      "financialGoals": {
+        "title": "Financial Goals",
+        "description": "Set and track financial milestones"
+      },
+      "expenseOptimization": {
+        "title": "Expense Optimization",
+        "description": "Reduce unnecessary spending"
+      }
+    }
   },
   "insights": {
     "title": "AI Insights",
@@ -112,12 +254,17 @@
     "expenseHistoryTitle": "Expense History",
     "expenseHistorySubtitle": "Your spending timeline",
     "noRecordsFoundTitle": "No Expense Records Found",
-    "noRecordsFoundMessage": "Start tracking your expenses to see your spending history and patterns here."
+    "noRecordsFoundMessage": "Start tracking your expenses to see your spending history and patterns here.",
+    "quickOverview": "Here's a quick overview of your recent expense activity.",
+    "trackSpending": "Track your spending, analyze patterns, and manage your budget efficiently!",
+    "error": {
+      "loadingHistory": "Error loading expense history"
+    }
   },
-
   "guest": {
     "hero": {
       "kicker": "AI-Powered Financial Management",
+      "welcome": "Welcome to",
       "title": "ExpenseTracker AI",
       "subtitle": "Track your expenses, manage your budget, and get AI-powered insights to take control of your finances.",
       "ctaGetStarted": "Get Started Free",
@@ -169,21 +316,27 @@
       }
     }
   },
-
   "expenseStats": {
     "title": "Expense Statistics",
     "subtitle": "Your spending insights and ranges",
     "averageDaily": "Average Daily Spending",
     "basedOnDays": "Based on {days} days with expenses",
     "highest": "Highest",
-    "lowest": "Lowest"
+    "lowest": "Lowest",
+    "unableToLoad": "Unable to load statistics",
+    "tryAgain": "Please try again later",
+    "noData": "No data"
   },
   "recordChart": {
     "title": "Expense Chart",
     "subtitle": "Visual representation of your spending",
     "errorTitle": "Error loading chart data",
     "noDataTitle": "No Data to Display",
-    "noDataMessage": "Start tracking your expenses to see your spending patterns visualized in this chart."
+    "noDataMessage": "Start tracking your expenses to see your spending patterns visualized in this chart.",
+    "amount": "Amount (₹)",
+    "date": "Date",
+    "totalSpent": "Total Spent",
+    "dailyAverage": "Daily Average"
   },
   "recordItem": {
     "deleteRecord": "Delete",
@@ -205,7 +358,21 @@
     "amountPlaceholder": "0.00",
     "subtitle": "Track your spending with AI assistance",
     "aiSuggestionTitle": "AI Category Suggestion",
-    "analyzingDescription": "AI is analyzing your description..."
+    "analyzingDescription": "AI is analyzing your description...",
+    "labelDescription": "Description",
+    "labelDate": "Date",
+    "labelCategory": "Category",
+    "labelAmount": "Amount",
+    "categoryHelper": "Press ✨ for AI suggestion",
+    "amountHelper": "Amount in dollars",
+    "categorySelectPlaceholder": "Select category",
+    "categoryFood": "Food",
+    "categoryTransportation": "Transportation",
+    "categoryShopping": "Shopping",
+    "categoryEntertainment": "Entertainment",
+    "categoryBills": "Bills",
+    "categoryHealthcare": "Healthcare",
+    "categoryOther": "Other"
   },
   "footer": {
     "brand": "ExpenseTracker AI",
@@ -216,6 +383,183 @@
     "smartCategorization": "Smart Categorization",
     "analyticsDashboard": "Analytics Dashboard",
     "allRightsReserved": "All rights reserved.",
-    "madeBy": "Made by Sahand"
+    "madeBy": "Made by Keerti"
+  },
+  "financial": {
+    "income": "Income",
+    "expense": "Expense",
+    "budget": "Budget",
+    "savings": "Savings",
+    "investment": "Investment",
+    "debt": "Debt",
+    "loan": "Loan",
+    "credit": "Credit",
+    "debit": "Debit",
+    "balance": "Balance",
+    "transaction": "Transaction",
+    "payment": "Payment",
+    "receipt": "Receipt",
+    "invoice": "Invoice",
+    "tax": "Tax",
+    "interest": "Interest",
+    "profit": "Profit",
+    "loss": "Loss",
+    "revenue": "Revenue",
+    "cost": "Cost",
+    "price": "Price",
+    "value": "Value",
+    "worth": "Worth",
+    "asset": "Asset",
+    "liability": "Liability",
+    "equity": "Equity",
+    "portfolio": "Portfolio",
+    "dividend": "Dividend",
+    "bonus": "Bonus",
+    "salary": "Salary",
+    "wage": "Wage",
+    "commission": "Commission",
+    "fee": "Fee",
+    "charge": "Charge",
+    "penalty": "Penalty",
+    "fine": "Fine",
+    "refund": "Refund",
+    "cashback": "Cashback",
+    "reward": "Reward",
+    "points": "Points",
+    "miles": "Miles",
+    "discount": "Discount",
+    "offer": "Offer",
+    "deal": "Deal",
+    "promotion": "Promotion",
+    "coupon": "Coupon",
+    "voucher": "Voucher"
+  },
+  "about": {
+    "hero": {
+      "kicker": "Powered by AI Technology",
+      "title": "About ExpenseTracker AI",
+      "subtitle": "Your intelligent companion for tracking expenses and managing your finances with cutting-edge AI-powered insights.",
+      "ctaStart": "Start Your Journey",
+      "ctaLearn": "Learn More"
+    },
+    "mission": {
+      "kicker": "Our Mission",
+      "title": "Transforming Financial Management with AI",
+      "description": "At FinvestorAI, we leverage cutting-edge artificial intelligence to revolutionize how individuals achieve financial wellness. Our AI analyzes your spending patterns to deliver personalized recommendations and actionable insights that lead to better budgeting and financial freedom.",
+      "stats": {
+        "users": "10K+",
+        "usersLabel": "Active Users",
+        "money": "$2M+",
+        "moneyLabel": "Money Tracked",
+        "satisfaction": "99%",
+        "satisfactionLabel": "Satisfaction Rate"
+      }
+    },
+    "features": {
+      "kicker": "Features",
+      "title": "Why Choose ExpenseTracker AI?",
+      "subtitle": "Discover the powerful features that make our AI-driven platform the smart choice for modern financial management.",
+      "aiInsights": {
+        "title": "AI-Powered Insights",
+        "description": "Get intelligent analysis of your spending patterns with personalized AI recommendations and automated category suggestions that learn from your behavior."
+      },
+      "smartCategorization": {
+        "title": "Smart Categorization",
+        "description": "Let our AI automatically categorize your expenses with 99% accuracy and provide tailored recommendations to enhance your budget management effortlessly."
+      },
+      "intelligentDashboard": {
+        "title": "Intelligent Dashboard",
+        "description": "Experience a modern, AI-enhanced interface that adapts to your financial goals, providing clear visualizations and instant insights that make sense."
+      }
+    },
+    "team": {
+      "kicker": "Meet the Team",
+      "title": "The Visionaries Behind ExpenseTracker AI",
+      "subtitle": "Our passionate team of developers, AI experts, and financial analysts is dedicated to making intelligent financial management accessible to everyone.",
+      "ceo": {
+        "name": "Keerti",
+        "role": "Founder & CEO",
+        "bio": "A passionate innovator dedicated to merging AI with financial empowerment. Keerti leads the vision and development of ExpenseTracker AI with precision and purpose."
+      }
+    },
+    "cta": {
+      "kicker": "Get Started Today",
+      "title": "Start Tracking Smarter with AI",
+      "subtitle": "Join thousands of users already improving their financial lives with AI-powered insights and smart tracking.",
+      "ctaText": "Start Free Now"
+    }
+  },
+  "contact": {
+    "hero": {
+      "kicker": "Get in Touch",
+      "title": "Contact ExpenseTracker AI",
+      "subtitle": "Have questions about AI-powered expense tracking or need help? We're here to assist you with intelligent financial management.",
+      "ctaEmail": "Send us an Email",
+      "ctaCall": "Call Us"
+    },
+    "info": {
+      "kicker": "Contact Information",
+      "title": "Multiple Ways to Connect",
+      "subtitle": "Choose the most convenient way to reach out to our ExpenseTracker AI support team."
+    },
+    "methods": {
+      "email": {
+        "title": "Email Support",
+        "description": "Get detailed assistance with your questions. We typically respond within 24 hours.",
+        "address": "support@expensetracker-ai.com",
+        "cta": "Email Us"
+      },
+      "phone": {
+        "title": "Phone Support",
+        "description": "Speak directly with our support team for immediate assistance with urgent matters.",
+        "number": "+1 (123) 456-7890"
+      },
+      "office": {
+        "title": "Office Location",
+        "description": "Visit our headquarters for in-person consultations and partnership discussions.",
+        "address1": "123 AI Innovation St",
+        "address2": "Tech City, USA"
+      }
+    },
+    "form": {
+      "title": "Send a Message",
+      "name": "Full Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Thank you! Your message has been sent successfully.",
+      "error": "There was an issue sending your message. Please try again."
+    },
+    "support": {
+      "kicker": "Support Information",
+      "title": "We're Here to Help",
+      "hours": {
+        "title": "Support Hours",
+        "weekdays": "Monday - Friday",
+        "weekdayTime": "9:00 AM - 6:00 PM PST",
+        "saturday": "Saturday",
+        "saturdayTime": "10:00 AM - 4:00 PM PST",
+        "sunday": "Sunday",
+        "sundayTime": "Closed",
+        "emailNote": "Email support: Available 24/7 with responses within 24 hours",
+        "closed": "Closed"
+      },
+      "quickHelp": {
+        "title": "Quick Help",
+        "technical": {
+          "title": "Technical Issues",
+          "description": "App not working properly? Check our troubleshooting guide first."
+        },
+        "ai": {
+          "title": "AI Features",
+          "description": "Questions about AI insights? Our AI documentation has answers."
+        },
+        "account": {
+          "title": "Account & Billing",
+          "description": "Account issues or billing questions? Contact us directly."
+        }
+      }
+    }
   }
 }

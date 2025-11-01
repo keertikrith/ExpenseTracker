@@ -5,7 +5,7 @@ import { UserProfile } from '@/lib/userProfile';
 
 export async function generateStockAnalysis(
   symbol: string,
-  stockData: any,
+  stockData: Record<string, unknown>,
   userProfile?: UserProfile | null,
   locale: string = 'en'
 ): Promise<{
@@ -21,7 +21,7 @@ export async function generateStockAnalysis(
     console.error('❌ Error in generateStockAnalysis action:', error);
     return {
       analysis: "Unable to generate analysis at this time.",
-      recommendation: 'HOLD',
+      recommendation: 'HOLD' as const,
       confidence: 0.5,
       reasoning: ['Analysis temporarily unavailable']
     };

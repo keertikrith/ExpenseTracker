@@ -33,7 +33,7 @@ export function useTranslationWithFallback(namespace?: string) {
         return fallbackText || key;
       }
     },
-    [t]
+    [t, locale]
   );
 
   return { t, translateWithFallback, translating };

@@ -29,11 +29,10 @@ export default async function LocaleLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale: string }> | { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
   // Await params to comply with Next.js async dynamic params
-  const resolvedParams = await params;
-  const locale = resolvedParams?.locale ?? "en";
+  const { locale } = await params;
   const messages = await getMessages({ locale });
 
   return (

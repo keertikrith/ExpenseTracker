@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useState, useEffect, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { getAIInsights } from "@/app/actions/getAIInsights";
 import { generateInsightAnswer } from "@/app/actions/generateInsightAnswer";
 
@@ -25,11 +25,14 @@ const AIInsights = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [aiAnswers, setAiAnswers] = useState<AIAnswer[]>([]);
+  const locale = useLocale();
+  const tCommon = useTranslations('common');
+  const t = useTranslations("insights");
 
-  const loadInsights = async () => {
+  const loadInsights = useCallback(async () => {
     setIsLoading(true);
     try {
-      const newInsights = await getAIInsights();
+      const newInsights = await getAIInsights(locale);
       setInsights(newInsights);
       setLastUpdated(new Date());
     } catch (error) {
@@ -48,7 +51,7 @@ const AIInsights = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [locale]);
 
   const handleActionClick = async (insight: InsightData) => {
     if (!insight.action) return;
@@ -102,8 +105,7 @@ const AIInsights = () => {
 
   useEffect(() => {
     loadInsights();
-  }, []);
-  const t = useTranslations("insights");
+  }, [loadInsights]);
 
   const getInsightIcon = (type: string) => {
     switch (type) {
@@ -157,11 +159,11 @@ const AIInsights = () => {
     const diffMs = now.getTime() - lastUpdated.getTime();
     const diffMins = Math.floor(diffMs / 60000);
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffMins < 1) return tCommon("justNow");
+    if (diffMins < 60) return tCommon("minutesAgo", { minutes: diffMins });
 
     const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffHours < 24) return tCommon("hoursAgo", { hours: diffHours });
 
     return lastUpdated.toLocaleDateString();
   };
@@ -240,8 +242,8 @@ const AIInsights = () => {
             <span className="w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full"></span>
             <span className="hidden sm:inline">{formatLastUpdated()}</span>
             <span className="sm:hidden">
-              {formatLastUpdated().includes("ago")
-                ? formatLastUpdated().replace(" ago", "")
+              {formatLastUpdated().includes(tCommon("ago"))
+                ? formatLastUpdated().replace(` ${tCommon("ago")}`, "")
                 : formatLastUpdated()}
             </span>
           </div>
