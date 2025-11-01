@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 export default function LocaleDebug() {
   const t = useTranslations('common');
   const tNavbar = useTranslations('navbar');
+  const tHome = useTranslations('home');
   const locale = useLocale();
 
   return (
@@ -13,14 +14,16 @@ export default function LocaleDebug() {
         🔍 Locale Debug (Current: {locale})
       </h3>
       <div className="space-y-1 text-sm">
-        <p><strong>Home:</strong> "{t('home')}"</p>
-        <p><strong>AI Chat:</strong> "{t('aiChat')}"</p>
-        <p><strong>Markets:</strong> "{t('markets')}"</p>
-        <p><strong>Navbar Title:</strong> "{tNavbar('title')}"</p>
-        <p><strong>Sign In:</strong> "{t('signIn')}"</p>
+        <p><strong>Home:</strong> &quot;{t('home')}&quot;</p>
+        <p><strong>AI Chat:</strong> &quot;{t('aiChat')}&quot;</p>
+        <p><strong>Markets:</strong> &quot;{t('markets')}&quot;</p>
+        <p><strong>Navbar Title:</strong> &quot;{tNavbar('title')}&quot;</p>
+        <p><strong>Sign In:</strong> &quot;{t('signIn')}&quot;</p>
+        <p><strong>Welcome Back:</strong> &quot;{tHome('welcomeBack', { name: 'Test' })}&quot;</p>
+        <p><strong>Joined:</strong> &quot;{tHome('joined')}&quot;</p>
       </div>
       <p className="text-xs text-red-600 dark:text-red-400 mt-2">
-        If you see keys like "common.home" instead of translated text, translations are broken.
+        If you see keys like &quot;common.home&quot; instead of translated text, translations are broken.
       </p>
     </div>
   );

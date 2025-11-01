@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 // Register Chart.js components
 ChartJS.register(
@@ -34,6 +35,7 @@ const BarChart = ({ records }: { records: Record[] }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [windowWidth, setWindowWidth] = useState(1024); // Default to desktop width
+  const t = useTranslations('recordChart');
 
   useEffect(() => {
     // Set initial window width
@@ -170,7 +172,7 @@ const BarChart = ({ records }: { records: Record[] }) => {
               item.categories.length > 1
                 ? `Categories: ${item.categories.join(', ')}`
                 : `Category: ${item.categories[0]}`;
-            return [`Total: $${item.amount.toFixed(2)}`, categoriesText];
+            return [`Total: ₹${item.amount.toFixed(2)}`, categoriesText];
           },
         },
       },
@@ -179,7 +181,7 @@ const BarChart = ({ records }: { records: Record[] }) => {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: t('date'),
           font: {
             size: isMobile ? 12 : 14,
             weight: 'bold' as const,
@@ -201,7 +203,7 @@ const BarChart = ({ records }: { records: Record[] }) => {
       y: {
         title: {
           display: true,
-          text: 'Amount ($)',
+          text: t('amount'),
           font: {
             size: isMobile ? 12 : 16, // Smaller font on mobile
             weight: 'bold' as const,
@@ -214,7 +216,7 @@ const BarChart = ({ records }: { records: Record[] }) => {
           },
           color: isDark ? '#9ca3af' : '#7f8c8d', // Gray y-axis labels
           callback: function (value: string | number) {
-            return '$' + value; // Add dollar sign to y-axis labels
+            return '₹' + value; // Add rupee sign to y-axis labels
           },
         },
         grid: {

@@ -3,10 +3,11 @@
 import React from "react";
 import { NextIntlClientProvider } from "next-intl";
 import DomTranslator from "./DomTranslator";
+import LocalePersistence from "./LocalePersistence";
 
 type Props = {
   locale: string;
-  messages: Record<string, any>;
+  messages: Record<string, unknown>;
   children: React.ReactNode;
 };
 
@@ -16,15 +17,18 @@ export default function ClientIntlProvider({
   children,
 }: Props) {
   const clientGetMessageFallback = ({
-    namespace,
     key,
+    namespace,
   }: {
-    namespace?: string;
     key: string;
-  }) => {
+    namespace?: string;
+  }): string => {
     const ns = namespace ? `${namespace}.` : "";
     const fullKey = `${ns}${key}`;
-    const englishValue = (messages as any)[fullKey] ?? fullKey;
+    const englishValue = (messages as Record<string, unknown>)[fullKey];
+    
+    // Ensure we return a string
+    const fallbackValue = typeof englishValue === 'string' ? englishValue : fullKey;
 
     // Fire-and-forget to request server translation
     (async () => {
@@ -35,16 +39,16 @@ export default function ClientIntlProvider({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             key: fullKey,
-            text: englishValue,
+            text: fallbackValue,
             targetLocale: locale,
           }),
         });
-      } catch (e) {
+      } catch {
         // ignore
       }
     })();
 
-    return englishValue;
+    return fallbackValue;
   };
 
   return (
@@ -55,6 +59,7 @@ export default function ClientIntlProvider({
       timeZone="Asia/Kolkata"
     >
       {children}
+      <LocalePersistence />
       <DomTranslator locale={locale} />
     </NextIntlClientProvider>
   );

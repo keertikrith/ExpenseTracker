@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
 declare global {
-  // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
 
@@ -9,7 +8,7 @@ declare global {
 // This avoids prepared statement issues when using pooled endpoints (e.g., pgbouncer / Supabase pooler).
 const prismaUrl = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
 
-const prismaOptions: any = {};
+const prismaOptions: Record<string, unknown> = {};
 if (prismaUrl) {
   prismaOptions.datasources = { db: { url: prismaUrl } };
 }

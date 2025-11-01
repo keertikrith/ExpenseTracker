@@ -1,8 +1,8 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -12,11 +12,24 @@ const languages = [
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Persist locale selection in localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferred-locale', locale);
+    }
+  }, [locale]);
+
   const handleLanguageChange = (newLocale: string) => {
+    // Store the preference in localStorage and cookie
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferred-locale', newLocale);
+      // Set cookie for server-side access
+      document.cookie = `preferred-locale=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+    
     // Get the current path without locale
     let pathWithoutLocale = pathname;
     

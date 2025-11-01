@@ -1,6 +1,9 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 const ContactPage = () => {
+  const t = useTranslations('contact');
   return (
     <div className='font-sans bg-gradient-to-br from-gray-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900/20 text-gray-800 dark:text-gray-200 transition-all duration-300 min-h-screen'>
       {/* Hero Section */}
@@ -9,17 +12,13 @@ const ContactPage = () => {
         <div className='relative z-10 max-w-4xl mx-auto w-full'>
           <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg'>
             <span className='w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-pulse'></span>
-            Get in Touch
+            {t('hero.kicker')}
           </div>
           <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-gray-100 leading-tight'>
-            Contact{' '}
-            <span className='bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent'>
-              ExpenseTracker AI
-            </span>
+            {t('hero.title')}
           </h1>
           <p className='text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed px-2 sm:px-0'>
-            Have questions about AI-powered expense tracking or need help?
-            We&#39;re here to assist you with intelligent financial management.
+            {t('hero.subtitle')}
           </p>
           <div className='mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2 sm:px-0'>
             <a
@@ -27,7 +26,7 @@ const ContactPage = () => {
               className='group relative overflow-hidden bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-700 hover:via-green-600 hover:to-teal-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold shadow-2xl hover:shadow-3xl transition-all duration-200 transform hover:-translate-y-0.5'
             >
               <span className='relative z-10 flex items-center justify-center gap-2'>
-                Send us an Email
+                {t('hero.ctaEmail')}
                 <span className='text-lg'>✉️</span>
               </span>
               <div className='absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200'></div>
@@ -36,7 +35,7 @@ const ContactPage = () => {
               href='tel:+11234567890'
               className='group border-2 border-emerald-500/20 dark:border-emerald-400/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold transition-all duration-200 backdrop-blur-sm flex items-center justify-center gap-2'
             >
-              Call Us
+              {t('hero.ctaCall')}
               <span className='text-lg'>📞</span>
             </a>
           </div>
@@ -50,17 +49,13 @@ const ContactPage = () => {
           <div className='text-center mb-10 sm:mb-12 md:mb-16'>
             <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6'>
               <span className='w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full'></span>
-              Contact Information
+              {t('info.kicker')}
             </div>
             <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-gray-100 px-2 sm:px-0'>
-              Multiple Ways to{' '}
-              <span className='text-emerald-600 dark:text-emerald-400'>
-                Connect
-              </span>
+              {t('info.title')}
             </h2>
             <p className='text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-2 sm:px-0'>
-              Choose the most convenient way to reach out to our ExpenseTracker
-              AI support team.
+              {t('info.subtitle')}
             </p>
           </div>
 
@@ -72,11 +67,10 @@ const ContactPage = () => {
                   <span className='text-white text-lg sm:text-xl'>✉️</span>
                 </div>
                 <h3 className='text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100'>
-                  Email Support
+                  {t('methods.email.title')}
                 </h3>
                 <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 leading-relaxed'>
-                  Get detailed assistance with your questions. We typically
-                  respond within 24 hours.
+                  {t('methods.email.description')}
                 </p>
                 <a
                   href='mailto:support@expensetracker-ai.com'
@@ -98,11 +92,10 @@ const ContactPage = () => {
                   <span className='text-white text-lg sm:text-xl'>📞</span>
                 </div>
                 <h3 className='text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100'>
-                  Phone Support
+                  {t('methods.phone.title')}
                 </h3>
                 <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 leading-relaxed'>
-                  Speak directly with our support team for immediate assistance
-                  with urgent matters.
+                  {t('methods.phone.description')}
                 </p>
                 <a
                   href='tel:+11234567890'
@@ -121,16 +114,15 @@ const ContactPage = () => {
                   <span className='text-white text-lg sm:text-xl'>📍</span>
                 </div>
                 <h3 className='text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100'>
-                  Office Location
+                  {t('methods.office.title')}
                 </h3>
                 <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 leading-relaxed'>
-                  Visit our headquarters for in-person consultations and
-                  partnership discussions.
+                  {t('methods.office.description')}
                 </p>
                 <div className='text-emerald-600 dark:text-emerald-400 font-medium text-sm sm:text-base'>
-                  123 AI Innovation St
+                  {t('methods.office.address1')}
                   <br />
-                  Tech City, USA
+                  {t('methods.office.address2')}
                 </div>
               </div>
             </div>
@@ -144,13 +136,10 @@ const ContactPage = () => {
           <div className='text-center mb-10 sm:mb-12 md:mb-16'>
             <div className='inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6'>
               <span className='w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full'></span>
-              Support Information
+              {t('support.kicker')}
             </div>
             <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-gray-100 px-2 sm:px-0'>
-              We&#39;re Here to{' '}
-              <span className='text-emerald-600 dark:text-emerald-400'>
-                Help
-              </span>
+              {t('support.title')}
             </h2>
           </div>
 
@@ -161,26 +150,25 @@ const ContactPage = () => {
                   <span className='text-white text-xs sm:text-sm'>🕒</span>
                 </div>
                 <h3 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100'>
-                  Support Hours
+                  {t('support.hours.title')}
                 </h3>
               </div>
               <div className='space-y-2 text-sm sm:text-base text-gray-600 dark:text-gray-400'>
                 <div className='flex justify-between'>
-                  <span>Monday - Friday:</span>
-                  <span className='font-medium'>9:00 AM - 6:00 PM PST</span>
+                  <span>{t('support.hours.weekdays')}:</span>
+                  <span className='font-medium'>{t('support.hours.weekdayTime')}</span>
                 </div>
                 <div className='flex justify-between'>
-                  <span>Saturday:</span>
-                  <span className='font-medium'>10:00 AM - 4:00 PM PST</span>
+                  <span>{t('support.hours.saturday')}:</span>
+                  <span className='font-medium'>{t('support.hours.saturdayTime')}</span>
                 </div>
                 <div className='flex justify-between'>
-                  <span>Sunday:</span>
-                  <span className='font-medium'>Closed</span>
+                  <span>{t('support.hours.sunday')}:</span>
+                  <span className='font-medium'>{t('support.hours.closed')}</span>
                 </div>
                 <div className='mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg'>
                   <p className='text-xs sm:text-sm text-emerald-700 dark:text-emerald-300'>
-                    <strong>Email support:</strong> Available 24/7 with
-                    responses within 24 hours
+                    <strong>{t('support.hours.emailNote')}</strong>
                   </p>
                 </div>
               </div>
@@ -192,34 +180,32 @@ const ContactPage = () => {
                   <span className='text-white text-xs sm:text-sm'>❓</span>
                 </div>
                 <h3 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100'>
-                  Quick Help
+                  {t('support.quickHelp.title')}
                 </h3>
               </div>
               <div className='space-y-3'>
                 <div className='p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg'>
                   <h4 className='font-semibold text-gray-900 dark:text-gray-100 text-xs sm:text-sm mb-1'>
-                    Technical Issues
+                    {t('support.quickHelp.technical.title')}
                   </h4>
                   <p className='text-xs text-gray-600 dark:text-gray-400'>
-                    App not working properly? Check our troubleshooting guide
-                    first.
+                    {t('support.quickHelp.technical.description')}
                   </p>
                 </div>
                 <div className='p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg'>
                   <h4 className='font-semibold text-gray-900 dark:text-gray-100 text-xs sm:text-sm mb-1'>
-                    AI Features
+                    {t('support.quickHelp.ai.title')}
                   </h4>
                   <p className='text-xs text-gray-600 dark:text-gray-400'>
-                    Questions about AI insights? Our AI documentation has
-                    answers.
+                    {t('support.quickHelp.ai.description')}
                   </p>
                 </div>
                 <div className='p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg'>
                   <h4 className='font-semibold text-gray-900 dark:text-gray-100 text-xs sm:text-sm mb-1'>
-                    Account & Billing
+                    {t('support.quickHelp.account.title')}
                   </h4>
                   <p className='text-xs text-gray-600 dark:text-gray-400'>
-                    Account issues or billing questions? Contact us directly.
+                    {t('support.quickHelp.account.description')}
                   </p>
                 </div>
               </div>

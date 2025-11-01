@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { getFinancialNews } from "@/app/actions/getFinancialNews";
 
@@ -30,51 +30,29 @@ const FinancialNews = () => {
     { id: "technology", name: t("tech"), icon: "💻" },
   ];
 
-  useEffect(() => {
-    loadNews();
-  }, [selectedCategory]);
-
-  const loadNews = async () => {
+  const loadNews = useCallback(async () => {
     setIsLoading(true);
     try {
-      const newsData = await getFinancialNews(selectedCategory);
-      setNews(newsData);
+      const newsData = await getFinancialNews(selectedCategory, locale);
+      
+      if (newsData.length === 0) {
+        console.log("No news data received from API");
+        setNews([]);
+      } else {
+        console.log(`Loaded ${newsData.length} news articles`);
+        setNews(newsData);
+      }
     } catch (error) {
       console.error("Error loading news:", error);
-      // Fallback to mock data
-      setNews([
-        {
-          id: "1",
-          title: t("placeholderTitle1"),
-          description: t("placeholderDesc1"),
-          url: "#",
-          publishedAt: new Date().toISOString(),
-          source: t("placeholderSource1"),
-          imageUrl: "https://via.placeholder.com/300x200?text=Stock+Market",
-        },
-        {
-          id: "2",
-          title: t("placeholderTitle2"),
-          description: t("placeholderDesc2"),
-          url: "#",
-          publishedAt: new Date(Date.now() - 3600000).toISOString(),
-          source: t("placeholderSource2"),
-          imageUrl: "https://via.placeholder.com/300x200?text=Crypto+Market",
-        },
-        {
-          id: "3",
-          title: t("placeholderTitle3"),
-          description: t("placeholderDesc3"),
-          url: "#",
-          publishedAt: new Date(Date.now() - 7200000).toISOString(),
-          source: t("placeholderSource3"),
-          imageUrl: "https://via.placeholder.com/300x200?text=Economy",
-        },
-      ]);
+      setNews([]);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedCategory, locale]);
+
+  useEffect(() => {
+    loadNews();
+  }, [selectedCategory, loadNews]);
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -100,7 +78,7 @@ const FinancialNews = () => {
               <span className="text-white text-sm sm:text-lg">📰</span>
             </div>
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100" key={locale}>
                 {t("title")}
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
@@ -159,6 +137,24 @@ const FinancialNews = () => {
                 </div>
               </div>
             ))}
+          </div>
+        ) : news.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">📰</span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              {t("newsUnavailable")}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              {t("placeholderDescription")}
+            </p>
+            <button
+              onClick={loadNews}
+              className="px-4 py-2 bg-gradient-to-r from-orange-600 via-red-500 to-pink-500 hover:from-orange-700 hover:via-red-600 hover:to-pink-600 text-white rounded-lg text-sm font-medium transition-all duration-200"
+            >
+              {t("tryAgain")}
+            </button>
           </div>
         ) : (
           <div className="space-y-4">

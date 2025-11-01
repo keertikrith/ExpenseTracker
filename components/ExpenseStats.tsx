@@ -3,7 +3,7 @@ import getUserRecord from "@/app/actions/getUserRecord";
 import getBestWorstExpense from "@/app/actions/getBestWorstExpense";
 import { getTranslations } from "next-intl/server";
 
-const ExpenseStats = async () => {
+const ExpenseStats = async ({ locale = "en" }: { locale?: string }) => {
   try {
     // Fetch both average and range data
     const [userRecordResult, rangeResult] = await Promise.all([
@@ -20,7 +20,7 @@ const ExpenseStats = async () => {
       daysWithRecords && daysWithRecords > 0 ? daysWithRecords : 1;
     const averageExpense = validRecord / validDays;
 
-    const t = await getTranslations("expenseStats");
+    const t = await getTranslations({ locale, namespace: "expenseStats" });
 
     return (
       <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-100/50 dark:border-gray-700/50 hover:shadow-2xl">
@@ -30,12 +30,10 @@ const ExpenseStats = async () => {
           </div>
           <div>
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
-              {t("title", { default: "Expense Statistics" })}
+              {t("title")}
             </h3>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              {t("subtitle", {
-                default: "Your spending insights and ranges",
-              })}
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -45,18 +43,15 @@ const ExpenseStats = async () => {
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 rounded-xl p-3 sm:p-4 border border-gray-200/50 dark:border-gray-600/50">
             <div className="text-center">
               <p className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-2 tracking-wide uppercase">
-                {t("averageDaily", {
-                  default: "Average Daily Spending",
-                })}
+                {t("averageDaily")}
               </p>
               <div className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                ${averageExpense.toFixed(2)}
+                ₹{averageExpense.toFixed(2)}
               </div>
               <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full text-xs font-medium">
                 <span className="w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full"></span>
                 {t("basedOnDays", {
                   days: validDays,
-                  default: `Based on ${validDays} days with expenses`,
                 })}
               </div>
             </div>
@@ -74,10 +69,10 @@ const ExpenseStats = async () => {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-gray-900 dark:text-gray-100 text-xs mb-0.5">
-                    {t("highest", { default: "Highest" })}
+                    {t("highest")}
                   </h4>
                   <p className="text-lg font-bold text-red-600 dark:text-red-300">
-                    {bestExpense !== undefined ? `$${bestExpense}` : "No data"}
+                    {bestExpense !== undefined ? `₹${bestExpense}` : t("noData")}
                   </p>
                 </div>
               </div>
@@ -93,12 +88,12 @@ const ExpenseStats = async () => {
                 </div>
                 <div className="flex-1">
                   <h4 className="font-bold text-gray-900 dark:text-gray-100 text-xs mb-0.5">
-                    {t("lowest", { default: "Lowest" })}
+                    {t("lowest")}
                   </h4>
                   <p className="text-lg font-bold text-green-600 dark:text-green-300">
                     {worstExpense !== undefined
-                      ? `$${worstExpense}`
-                      : "No data"}
+                      ? `₹${worstExpense}`
+                      : t("noData")}
                   </p>
                 </div>
               </div>
@@ -109,7 +104,7 @@ const ExpenseStats = async () => {
     );
   } catch (error) {
     console.error("Error fetching expense statistics:", error);
-    const t = await getTranslations("expenseStats");
+    const t = await getTranslations({ locale, namespace: "expenseStats" });
     return (
       <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-100/50 dark:border-gray-700/50 hover:shadow-2xl">
         <div className="flex items-center gap-3 mb-6">

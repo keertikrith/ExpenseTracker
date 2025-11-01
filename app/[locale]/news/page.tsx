@@ -2,8 +2,17 @@ import FinancialNews from '@/components/FinancialNews';
 import { currentUser } from '@clerk/nextjs/server';
 import Guest from '@/components/Guest';
 
-export default async function NewsPage() {
+import { getTranslations } from 'next-intl/server';
+
+export default async function NewsPage({
+  params
+}: {
+  params: Promise<{ locale: string }>
+}) {
   const user = await currentUser();
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'news' });
+  
   if (!user) {
     return <Guest />;
   }
@@ -14,10 +23,10 @@ export default async function NewsPage() {
         <div className='max-w-6xl mx-auto'>
           <div className='text-center mb-6 sm:mb-8'>
             <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 sm:mb-4'>
-              Financial News
+              {t('title')}
             </h1>
             <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto'>
-              Latest market updates across stocks, crypto, economy and tech.
+              {t('subtitle')}
             </p>
           </div>
 

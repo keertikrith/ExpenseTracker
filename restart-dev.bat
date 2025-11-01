@@ -1,0 +1,6 @@
+@echo off
+echo Restarting development server...
+taskkill /f /im node.exe 2>nul
+timeout /t 2 /nobreak >nul
+echo Starting fresh development server...
+npm run dev

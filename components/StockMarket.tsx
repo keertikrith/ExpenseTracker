@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getStockData } from '@/app/actions/getStockData';
 import { generateStockAnalysis } from '@/app/actions/generateStockAnalysis';
 import { getUserProfile } from '@/lib/userProfile';
@@ -38,6 +38,17 @@ interface StockAnalysis {
   reasoning: string[];
 }
 
+interface UserProfile {
+  id: string;
+  financialGoals: string[];
+  riskTolerance: 'low' | 'medium' | 'high';
+  investmentExperience: 'beginner' | 'intermediate' | 'advanced';
+  monthlyIncome?: number;
+  monthlyExpenses?: number;
+  age?: number;
+  occupation?: string;
+}
+
 type Mode = 'stocks' | 'crypto' | 'both';
 
 const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
@@ -49,7 +60,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
   const [selectedStock, setSelectedStock] = useState<StockData | null>(null);
   const [stockAnalysis, setStockAnalysis] = useState<StockAnalysis | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [series, setSeries] = useState<Array<{ time: string; price: number }>>([]);
   
   const t = useTranslations('markets');
@@ -57,33 +68,28 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
   const locale = useLocale();
 
   // Popular Indian stocks
-  const popularStocks = [
+  const popularStocks = useMemo(() => [
     'RELIANCE.BSE', 'TCS.BSE', 'HDFCBANK.BSE', 'INFY.BSE', 'HINDUNILVR.BSE',
     'ICICIBANK.BSE', 'SBIN.BSE', 'BHARTIARTL.BSE', 'ITC.BSE', 'KOTAKBANK.BSE',
     'LT.BSE', 'ASIANPAINT.BSE', 'AXISBANK.BSE', 'MARUTI.BSE', 'NESTLEIND.BSE'
-  ];
+  ], []);
 
   // Popular cryptocurrencies
-  const popularCrypto = [
+  const popularCrypto = useMemo(() => [
     'BTC/USD', 'ETH/USD', 'BNB/USD', 'ADA/USD', 'SOL/USD',
     'XRP/USD', 'DOT/USD', 'DOGE/USD', 'AVAX/USD', 'MATIC/USD'
-  ];
+  ], []);
 
-  useEffect(() => {
-    loadInitialData();
-    loadUserProfile();
-  }, []);
-
-  const loadUserProfile = async () => {
+  const loadUserProfile = useCallback(async () => {
     try {
       const profile = await getUserProfile();
       setUserProfile(profile);
     } catch (error) {
       console.error('Error loading user profile:', error);
     }
-  };
+  }, []);
 
-  const loadInitialData = async () => {
+  const loadInitialData = useCallback(async () => {
     setIsLoading(true);
     try {
       if (mode !== 'crypto') {
@@ -108,7 +114,12 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [mode, popularStocks, popularCrypto]);
+
+  useEffect(() => {
+    loadInitialData();
+    loadUserProfile();
+  }, [loadInitialData, loadUserProfile]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;

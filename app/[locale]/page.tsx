@@ -8,9 +8,22 @@ import LocaleDebug from '@/components/LocaleDebug';
 import { currentUser } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 
-export default async function HomePage() {
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const user = await currentUser();
-  const t = await getTranslations('home');
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'home' });
+  
+  // Debug logging
+  console.log('HomePage locale:', locale);
+  console.log('Welcome back translation:', t('welcomeBack', { name: 'Test' }));
   
   if (!user) {
     return <Guest />;
@@ -43,11 +56,11 @@ export default async function HomePage() {
                   <div className='w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg'>
                     <span className='text-white text-sm sm:text-lg'>👋</span>
                   </div>
-                  <h2 className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100'>
-                    {t('welcomeBack', { name: user.firstName })}
+                  <h2 className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100' key={`welcome-${locale}-${Date.now()}`}>
+                    {t('welcomeBack', { name: user.firstName || user.username || 'User' })}
                   </h2>
                 </div>
-                <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-md mx-auto sm:mx-0'>
+                <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-md mx-auto sm:mx-0' key={`desc-${locale}-${Date.now()}`}>
                   {t('description')}
                 </p>
                 {/* Mobile-optimized badge grid */}
@@ -90,8 +103,8 @@ export default async function HomePage() {
           {/* Right Column - Stacked below on mobile */}
           <div className='space-y-4 sm:space-y-6'>
             {/* Expense Analytics */}
-            <RecordChart />
-            <ExpenseStats />
+            <RecordChart locale={locale} />
+            <ExpenseStats locale={locale} />
           </div>
         </div>
 

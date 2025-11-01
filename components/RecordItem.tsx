@@ -85,7 +85,7 @@ const RecordItem = ({ record }: { record: Record }) => {
               {new Date(record?.date).toLocaleDateString()}
             </span>
             <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
-              ${record?.amount.toFixed(2)}
+              ₹{record?.amount.toFixed(2)}
             </span>
           </div>
 

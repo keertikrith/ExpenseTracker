@@ -4,9 +4,14 @@ import { currentUser } from "@clerk/nextjs/server";
 import Guest from "@/components/Guest";
 import { getTranslations } from "next-intl/server";
 
-export default async function StockMarketPage() {
+export default async function StockMarketPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const user = await currentUser();
-  const t = await getTranslations("markets");
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "markets" });
   if (!user) {
     return <Guest />;
   }

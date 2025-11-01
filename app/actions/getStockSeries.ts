@@ -12,7 +12,6 @@ export async function getStockSeries(symbol: string): Promise<SeriesPoint[]> {
       throw new Error('Twelve Data API key not configured');
     }
 
-    const isCrypto = symbol.includes('/USD') || symbol.includes('/BTC') || symbol.includes('/ETH');
     const encodedSymbol = encodeURIComponent(symbol);
     // Use 1day candles for both to keep it simple and light
     const url = `https://api.twelvedata.com/time_series?symbol=${encodedSymbol}&interval=1day&outputsize=30&apikey=${apiKey}`;

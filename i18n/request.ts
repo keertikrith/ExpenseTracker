@@ -40,6 +40,9 @@ export default getRequestConfig(async ({ locale }) => {
     ...baseMessages,
     ...generated,
   };
+  
+  // Force cache refresh - updated 2025-10-29
+  console.log(`Loading translations for locale: ${validLocale}`);
 
   // Provide a getMessageFallback for next-intl that returns English fallback
   // immediately and triggers a background translation job to persist the
