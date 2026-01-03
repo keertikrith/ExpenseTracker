@@ -170,6 +170,11 @@ const FinancialNews = () => {
                         src={article.imageUrl}
                         alt={article.title}
                         className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement!.innerHTML = '<span class="text-gray-400 text-2xl">📰</span>';
+                        }}
                       />
                     ) : (
                       <span className="text-gray-400 text-2xl">📰</span>

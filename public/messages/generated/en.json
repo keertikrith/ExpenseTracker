@@ -1,0 +1,30 @@
+{
+  "about": {
+    "story": {
+      "kicker": "about.story.kicker",
+      "title": "about.story.title",
+      "description1": "about.story.description1",
+      "description2": "about.story.description2",
+      "trustedBy": "about.story.trustedBy",
+      "joinCommunity": "about.story.joinCommunity",
+      "timeline": {
+        "founded": "about.story.timeline.founded",
+        "aiFirst": "about.story.timeline.aiFirst",
+        "global": "about.story.timeline.global",
+        "userCentric": "about.story.timeline.userCentric"
+      }
+    },
+    "cta": {
+      "getStarted": "about.cta.getStarted",
+      "contact": "about.cta.contact",
+      "benefits": {
+        "free": "about.cta.benefits.free",
+        "freeDesc": "about.cta.benefits.freeDesc",
+        "support": "about.cta.benefits.support",
+        "supportDesc": "about.cta.benefits.supportDesc",
+        "setup": "about.cta.benefits.setup",
+        "setupDesc": "about.cta.benefits.setupDesc"
+      }
+    }
+  }
+}

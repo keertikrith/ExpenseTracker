@@ -1,3 +1,4 @@
+
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface RawInsight {
@@ -25,6 +26,8 @@ const API_KEYS = [
   process.env.GEMINI_API_KEY_2 || '',
   process.env.GEMINI_API_KEY_3 || ''
 ].filter(key => key.length > 0);
+
+console.log('🔑 Available API keys:', API_KEYS.length);
 
 let currentKeyIndex = 0;
 
@@ -115,8 +118,8 @@ export async function generateExpenseInsights(
     Return only valid JSON array, no additional text.`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = result.response;
+    const text = await response.text();
 
     // Clean the response by removing markdown code blocks if present
     let cleanedResponse = text.trim();
@@ -176,8 +179,8 @@ export async function categorizeExpense(description: string): Promise<string> {
     Respond with only the category name.`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const category = response.text().trim();
+    const response = result.response;
+    const category = (await response.text()).trim();
 
     const validCategories = [
       'Food',
@@ -240,8 +243,8 @@ export async function generateAIAnswer(
     Return only the answer text, no additional formatting.`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = result.response;
+    const text = await response.text();
 
     return text.trim();
   } catch (error) {
@@ -257,24 +260,19 @@ export async function generateAIChatResponse(
   locale: string = 'en',
   expenseData?: ExpenseRecord[]
 ): Promise<string> {
-  let lastError: unknown = null;
+  try {
+    console.log('🤖 generateAIChatResponse called with:', { 
+      messageLength: message.length, 
+      locale, 
+      hasProfile: !!userProfile,
+      expenseCount: expenseData?.length || 0,
+      apiKeysAvailable: API_KEYS.length 
+    });
 
-  // Try each API key until one works
-  for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
-    try {
-      const apiKey = getNextApiKey();
-      const genAI = createGenAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash',
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        },
-      });
+    const genAI = createGenAI();
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-      const userContext = userProfile ? `
+    const userContext = userProfile ? `
     User Profile Context:
     - Financial Goals: ${userProfile.financialGoals.join(', ')}
     - Risk Tolerance: ${userProfile.riskTolerance}
@@ -285,7 +283,7 @@ export async function generateAIChatResponse(
     - Occupation: ${userProfile.occupation || 'Not specified'}
     ` : '';
 
-      const expenseContext = expenseData && expenseData.length > 0 ? `
+    const expenseContext = expenseData && expenseData.length > 0 ? `
     Recent Expense Data:
     ${expenseData.slice(-10).map(expense =>
         `- ₹${expense.amount} on ${expense.category} (${expense.description}) - ${new Date(expense.date).toLocaleDateString()}`
@@ -294,18 +292,18 @@ export async function generateAIChatResponse(
     Total Recent Expenses: ₹${expenseData.slice(-10).reduce((sum, exp) => sum + exp.amount, 0)}
     ` : '';
 
-      const conversationContext = conversationHistory ? `
+    const conversationContext = conversationHistory ? `
     Recent conversation:
     ${conversationHistory.slice(-6).map(msg => `${msg.role}: ${msg.content}`).join('\n')}
     ` : '';
 
-      const localeInstructions = {
-        'hi': 'आपको हिंदी में जवाब देना है। देवनागरी लिपि का उपयोग करें। भारतीय रुपये (₹) का उपयोग करें।',
-        'kn': 'ನೀವು ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಬೇಕು। ಕನ್ನಡ ಲಿಪಿಯನ್ನು ಬಳಸಿ। ಭಾರತೀಯ ರೂಪಾಯಿ (₹) ಬಳಸಿ।',
-        'en': 'Respond in English. Use Indian Rupees (₹) for all currency references.'
-      };
+    const localeInstructions = {
+      'hi': 'आपको हिंदी में जवाब देना है। देवनागरी लिपि का उपयोग करें। भारतीय रुपये (₹) का उपयोग करें।',
+      'kn': 'ನೀವು ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಬೇಕು। ಕನ್ನಡ ಲಿಪಿಯನ್ನು ಬಳಸಿ। ಭಾರತೀಯ ರೂಪಾಯಿ (₹) ಬಳಸಿ।',
+      'en': 'Respond in English. Use Indian Rupees (₹) for all currency references.'
+    };
 
-      const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. 
+    const prompt = `You are a professional financial advisor AI assistant with deep knowledge of Indian financial markets and regulations. 
 
     IMPORTANT: ${localeInstructions[locale as keyof typeof localeInstructions] || localeInstructions.en}
 
@@ -341,41 +339,24 @@ export async function generateAIChatResponse(
 
     Return only the response text, no additional formatting or disclaimers.`;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+    console.log('📝 Sending prompt to Gemini...');
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = await response.text();
 
-      return text.trim();
-    } catch (error: unknown) {
-      lastError = error;
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`❌ Error with API key ${attempt + 1}:`, errorMessage);
+    console.log('✅ Gemini response received:', text.substring(0, 100));
+    return text.trim();
+  } catch (error) {
+    console.error('❌ Error generating AI chat response:', error);
+    
+    const fallbackMessages = {
+      'hi': 'मुझे खुशी होगी कि मैं आपकी मदद कर सकूं, लेकिन अभी मुझे तकनीकी समस्या का सामना करना पड़ रहा है। कृपया कुछ देर बाद पुनः प्रयास करें।',
+      'kn': 'ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಸಂತೋಷಪಡುತ್ತೇನೆ, ಆದರೆ ಇದೀಗ ತಾಂತ್ರಿಕ ಸಮಸ್ಯೆಯನ್ನು ಎದುರಿಸುತ್ತಿದ್ದೇನೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+      'en': "I'd be happy to help you, but I'm experiencing technical difficulties right now. Please try again in a moment."
+    };
 
-      // If it's a quota error, try next key
-      const errorStatus = (error as { status?: number })?.status;
-      if (errorStatus === 429 || errorMessage?.includes('quota') || errorMessage?.includes('rate limit')) {
-        console.log(`🔄 Quota exceeded for API key ${attempt + 1}, trying next key...`);
-        continue;
-      }
-
-      // For other errors, also try next key
-      if (attempt < API_KEYS.length - 1) {
-        console.log(`🔄 Error with API key ${attempt + 1}, trying next key...`);
-        continue;
-      }
-    }
+    return fallbackMessages[locale as keyof typeof fallbackMessages] || fallbackMessages.en;
   }
-
-  // All API keys failed
-  console.error('❌ All Gemini API keys failed:', lastError);
-
-  const fallbackMessages = {
-    'hi': 'मुझे खुशी होगी कि मैं आपकी मदद कर सकूं, लेकिन अभी मुझे तकनीकी समस्या का सामना करना पड़ रहा है। कृपया कुछ देर बाद पुनः प्रयास करें।',
-    'kn': 'ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಸಂತೋಷಪಡುತ್ತೇನೆ, ಆದರೆ ಇದೀಗ ತಾಂತ್ರಿಕ ಸಮಸ್ಯೆಯನ್ನು ಎದುರಿಸುತ್ತಿದ್ದೇನೆ. ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
-    'en': "I'd be happy to help you, but I'm experiencing technical difficulties right now. Please try again in a moment."
-  };
-
-  return fallbackMessages[locale as keyof typeof fallbackMessages] || fallbackMessages.en;
 }
 
 export async function generateStockAnalysis(
@@ -441,8 +422,8 @@ export async function generateStockAnalysis(
     Return only valid JSON, no additional text.`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = result.response;
+    const text = await response.text();
 
     // Clean the response
     let cleanedResponse = text.trim();
@@ -484,13 +465,31 @@ export async function translateText(text: string, targetLocale: string): Promise
   try {
     if (!text) return text;
     if (!targetLocale || targetLocale === 'en') return text;
+    
+    // Map locale codes to language names for better translation
+    const localeToLanguage: Record<string, string> = {
+      'hi': 'Hindi',
+      'kn': 'Kannada',
+      'en': 'English'
+    };
+    
+    const languageName = localeToLanguage[targetLocale] || targetLocale;
+    
     const genAI = createGenAI();
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const prompt = `Translate the following text to ${targetLocale}. Return ONLY the translated text without quotes or extra commentary.\n\nText: ${text}`;
+    const prompt = `Translate the following English text to ${languageName}. Return ONLY the translated text without quotes, explanations, or extra commentary. Keep the meaning accurate and natural.
+
+Text: ${text}`;
+    
     const res = await model.generateContent(prompt);
     const out = await res.response.text();
-    return (out || text).trim();
-  } catch {
+    const translated = (out || text).trim();
+    
+    console.log(`Translated "${text.substring(0, 50)}..." to ${languageName}: "${translated.substring(0, 50)}..."`);
+    
+    return translated;
+  } catch (error) {
+    console.error(`Translation error for locale ${targetLocale}:`, error);
     return text;
   }
 }

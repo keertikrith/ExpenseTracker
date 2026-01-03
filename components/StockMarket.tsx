@@ -172,7 +172,7 @@ const StockMarket = ({ mode = 'both' }: { mode?: Mode }) => {
       // Load series in parallel with analysis
       const [seriesData, analysis] = await Promise.all([
         getStockSeries(stock.symbol),
-        generateStockAnalysis(stock.symbol, stock, userProfile, locale),
+        generateStockAnalysis(stock.symbol, stock as unknown as Record<string, unknown>, userProfile, locale),
       ]);
       setSeries(seriesData);
       setStockAnalysis(analysis);

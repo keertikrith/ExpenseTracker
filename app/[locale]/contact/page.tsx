@@ -1,9 +1,13 @@
-'use client';
-
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-const ContactPage = () => {
-  const t = useTranslations('contact');
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'contact' });
   return (
     <div className='font-sans bg-gradient-to-br from-gray-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-emerald-900/20 text-gray-800 dark:text-gray-200 transition-all duration-300 min-h-screen'>
       {/* Hero Section */}
@@ -216,5 +220,3 @@ const ContactPage = () => {
     </div>
   );
 };
-
-export default ContactPage;

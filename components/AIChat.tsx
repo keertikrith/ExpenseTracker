@@ -195,10 +195,15 @@ const AIChat = () => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error("Error generating AI response:", error);
+      const errorMessages = {
+        'hi': 'क्षमा करें, मुझे एक त्रुटि का सामना करना पड़ा। कृपया पुनः प्रयास करें।',
+        'kn': 'ಕ್ಷಮಿಸಿ, ನಾನು ದೋಷವನ್ನು ಎದುರಿಸಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+        'en': 'Sorry, I encountered an error. Please try again.'
+      };
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
         role: "assistant",
-        content: "Sorry, I encountered an error. Please try again.",
+        content: errorMessages[locale as keyof typeof errorMessages] || errorMessages.en,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

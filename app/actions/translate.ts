@@ -7,3 +7,4 @@ export async function translate(text: string, locale: string) {
 }
 
 
+

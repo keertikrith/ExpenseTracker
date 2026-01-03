@@ -38,3 +38,4 @@ export function useTranslationWithFallback(namespace?: string) {
 
   return { t, translateWithFallback, translating };
 }
+

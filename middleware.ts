@@ -1,40 +1,39 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
-import createMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
+import { clerkMiddleware } from "@clerk/nextjs/server";
+import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
 
+// ✅ Internationalization setup
 const intlMiddleware = createMiddleware({
-  locales: ['en', 'hi', 'kn'],
-  defaultLocale: 'en',
-  localePrefix: 'always',
-  localeDetection: true, // Enable locale detection
-  alternateLinks: false
+  locales: ["en", "hi", "kn"],          // supported locales
+  defaultLocale: "en",                  // fallback locale
+  localePrefix: "always",               // always include the locale in the URL
+  localeDetection: true,                // detect from headers or cookies
+  alternateLinks: false,
 });
 
+// ✅ Combined Clerk + next-intl middleware
 export default clerkMiddleware((auth, req: NextRequest) => {
-  // Check for stored locale preference in cookie
-  const preferredLocale = req.cookies.get('preferred-locale')?.value;
-  
-  if (preferredLocale && ['en', 'hi', 'kn'].includes(preferredLocale)) {
-    // If we have a preferred locale and we're on root path, redirect to preferred locale
-    if (req.nextUrl.pathname === '/') {
+  const preferredLocale = req.cookies.get("preferred-locale")?.value;
+
+  // If a preferred locale cookie exists, redirect root `/` → `/<locale>`
+  if (preferredLocale && ["en", "hi", "kn"].includes(preferredLocale)) {
+    if (req.nextUrl.pathname === "/") {
       const url = req.nextUrl.clone();
       url.pathname = `/${preferredLocale}`;
-      return Response.redirect(url);
+      return NextResponse.redirect(url); // ✅ Must return a NextResponse
     }
   }
-  
-  return intlMiddleware(req);
+
+  // ✅ Pass through to next-intl or continue normally
+  return intlMiddleware(req) ?? NextResponse.next();
 });
 
+// ✅ Matcher and runtime configuration
 export const config = {
   matcher: [
-    // Enable a redirect to a matching locale at the root
-    '/',
-    // Set a cookie to remember the previous locale for
-    // all requests that have a locale prefix
-    '/(hi|kn|en)/:path*',
-    // Enable redirects that add missing locales
-    // (e.g. `/pathnames` -> `/en/pathnames`)
-    '/((?!_next|_vercel|.*\\..*).*)'
-  ]
+    "/",                                 // home
+    "/(hi|kn|en)/:path*",                // localized routes
+    "/((?!_next|_vercel|.*\\..*).*)",   // exclude static files and internals
+  ],
+  runtime: "nodejs",                     // ✅ stable for Clerk + next-intl
 };
