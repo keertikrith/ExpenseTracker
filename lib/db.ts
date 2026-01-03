@@ -4,11 +4,11 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-// Allow an unpooled connection string to be used for Prisma if provided.
+// Allow a direct connection string to be used for Prisma if provided.
 // This avoids prepared statement issues when using pooled endpoints (e.g., pgbouncer / Supabase pooler).
-const prismaUrl = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+const prismaUrl = process.env.DIRECT_URL || process.env.DATABASE_URL;
 
-const prismaOptions: Record<string, unknown> = {};
+const prismaOptions: ConstructorParameters<typeof PrismaClient>[0] = {};
 if (prismaUrl) {
   prismaOptions.datasources = { db: { url: prismaUrl } };
 }

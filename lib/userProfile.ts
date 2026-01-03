@@ -30,10 +30,10 @@ export async function getUserProfile(): Promise<UserProfile | null> {
         financialGoals: profile.financialGoals,
         riskTolerance: profile.riskTolerance as 'low' | 'medium' | 'high',
         investmentExperience: profile.investmentExperience as 'beginner' | 'intermediate' | 'advanced',
-        monthlyIncome: profile.monthlyIncome,
-        monthlyExpenses: profile.monthlyExpenses,
-        age: profile.age,
-        occupation: profile.occupation
+        monthlyIncome: profile.monthlyIncome ?? undefined,
+        monthlyExpenses: profile.monthlyExpenses ?? undefined,
+        age: profile.age ?? undefined,
+        occupation: profile.occupation ?? undefined
       };
     }
 
@@ -87,15 +87,16 @@ export async function updateUserProfile(profileData: Partial<UserProfile>): Prom
       financialGoals: profile.financialGoals,
       riskTolerance: profile.riskTolerance as 'low' | 'medium' | 'high',
       investmentExperience: profile.investmentExperience as 'beginner' | 'intermediate' | 'advanced',
-      monthlyIncome: profile.monthlyIncome,
-      monthlyExpenses: profile.monthlyExpenses,
-      age: profile.age,
-      occupation: profile.occupation
+      monthlyIncome: profile.monthlyIncome ?? undefined,
+      monthlyExpenses: profile.monthlyExpenses ?? undefined,
+      age: profile.age ?? undefined,
+      occupation: profile.occupation ?? undefined
     };
   } catch (error) {
     console.error('Error updating user profile:', error);
     return null;
   }
 }
+
 
 

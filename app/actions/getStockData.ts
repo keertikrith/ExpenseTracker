@@ -131,3 +131,4 @@ function getCryptoName(symbol: string): string {
 }
 
 
+
