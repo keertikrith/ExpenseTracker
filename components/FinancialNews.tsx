@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import Image from "next/image";
 import { getFinancialNews } from "@/app/actions/getFinancialNews";
 
 interface NewsArticle {
@@ -166,10 +167,13 @@ const FinancialNews = () => {
                 <div className="flex gap-4">
                   <div className="w-20 h-16 bg-gray-200 dark:bg-gray-600 rounded-lg flex-shrink-0 flex items-center justify-center">
                     {article.imageUrl ? (
-                      <img
+                      <Image
                         src={article.imageUrl}
                         alt={article.title}
+                        width={80}
+                        height={64}
                         className="w-full h-full object-cover rounded-lg"
+                        unoptimized
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';

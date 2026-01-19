@@ -24,6 +24,46 @@
         "supportDesc": "about.cta.benefits.supportDesc",
         "setup": "about.cta.benefits.setup",
         "setupDesc": "about.cta.benefits.setupDesc"
+      },
+      "kicker": "about.cta.kicker",
+      "title": "about.cta.title",
+      "subtitle": "about.cta.subtitle"
+    },
+    "hero": {
+      "kicker": "about.hero.kicker",
+      "title": "about.hero.title",
+      "subtitle": "about.hero.subtitle",
+      "ctaStart": "about.hero.ctaStart",
+      "ctaLearn": "about.hero.ctaLearn"
+    },
+    "mission": {
+      "kicker": "about.mission.kicker",
+      "stats": {
+        "users": "about.mission.stats.users",
+        "usersLabel": "about.mission.stats.usersLabel",
+        "money": "about.mission.stats.money",
+        "satisfaction": "about.mission.stats.satisfaction",
+        "satisfactionLabel": "about.mission.stats.satisfactionLabel",
+        "moneyLabel": "about.mission.stats.moneyLabel"
+      },
+      "description": "about.mission.description",
+      "title": "about.mission.title"
+    },
+    "features": {
+      "kicker": "about.features.kicker",
+      "title": "about.features.title",
+      "aiInsights": {
+        "title": "about.features.aiInsights.title",
+        "description": "about.features.aiInsights.description"
+      },
+      "subtitle": "about.features.subtitle",
+      "smartCategorization": {
+        "title": "about.features.smartCategorization.title",
+        "description": "about.features.smartCategorization.description"
+      },
+      "intelligentDashboard": {
+        "description": "about.features.intelligentDashboard.description",
+        "title": "about.features.intelligentDashboard.title"
       }
     }
   }

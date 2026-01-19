@@ -65,7 +65,7 @@ export async function generateExpenseInsights(
 ): Promise<AIInsight[]> {
   try {
     const genAI = createGenAI();
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
 
     // Prepare expense data for AI analysis
     const expensesSummary = expenses.map((expense) => ({
