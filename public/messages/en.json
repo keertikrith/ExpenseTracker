@@ -472,6 +472,20 @@
         "description": "Experience a modern, AI-enhanced interface that adapts to your financial goals, providing clear visualizations and instant insights that make sense."
       }
     },
+    "story": {
+      "kicker": "Our Story",
+      "title": "Building the Future of Financial Management",
+      "description1": "ExpenseTracker AI was born from a simple idea: everyone deserves intelligent financial guidance. We started as a small team of developers and financial experts who believed that AI could democratize financial wellness.",
+      "description2": "Today, we're proud to serve thousands of users worldwide, helping them make smarter financial decisions through our advanced AI technology and intuitive design.",
+      "trustedBy": "Trusted by 10,000+ users",
+      "joinCommunity": "Join our growing community",
+      "timeline": {
+        "founded": "2024 - Founded with AI-first vision",
+        "aiFirst": "Advanced AI algorithms developed",
+        "global": "Launched globally with multi-language support",
+        "userCentric": "Continuous improvement based on user feedback"
+      }
+    },
     "team": {
       "kicker": "Meet the Team",
       "title": "The Visionaries Behind ExpenseTracker AI",
@@ -486,7 +500,16 @@
       "kicker": "Get Started Today",
       "title": "Start Tracking Smarter with AI",
       "subtitle": "Join thousands of users already improving their financial lives with AI-powered insights and smart tracking.",
-      "ctaText": "Start Free Now"
+      "getStarted": "Start Free Now",
+      "contact": "Contact Us",
+      "benefits": {
+        "free": "Free",
+        "freeDesc": "Always free to start",
+        "support": "24/7",
+        "supportDesc": "Expert support available",
+        "setup": "2 min",
+        "setupDesc": "Quick setup process"
+      }
     }
   },
   "contact": {
